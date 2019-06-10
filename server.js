@@ -22,7 +22,33 @@ con.connect(err => {
 });
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.get("/api/hello", (req, res) => {
-  res.send({ express: "Hello From Express" });
-});
+
+app.get("/api/listfestivals", (req, res) => {
+  let sql = "SELECT * FROM tblfestival";
+  con.query(sql, (err, result) => {
+    if (err) throw err;
+    // console.log(result);
+    res.send({ express: result });
+  });
+}); // INM 10-06-2019
+
+app.post("/api/addfestivals", (req, res) => {
+  console.log("lodo");
+  console.log(req);
+  let festivals = {
+    fname: req.body.festival,
+    keywords: req.body.keywords
+  };
+  console.log("hello" + festivals);
+  console.log("hi" + req);
+
+  let sql = "INSERT INTO tblfestival SET ?";
+  let query = con.query(sql, festivals, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.body = "success";
+    res.send(JSON.stringify(result));
+  });
+}); // INM 10-06-2019)
+
 app.listen(port, () => console.log(`Listening on port ${port}`));
