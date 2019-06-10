@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import Content from "./Content";
 import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 
 export default class Header extends Component {
@@ -43,11 +43,25 @@ export default class Header extends Component {
                             <a href="/">Home</a>
                           </li>
 
-                          <li>
-                            <Link to="/companies">Companies</Link>
+                          <li class="">
+                            <a
+                              href="#"
+                              name="Companies"
+                              onClick={() => this.props.linkfun("Companies")}
+                            >
+                              Companies
+                            </a>
                           </li>
                           <li>
-                            <a href="/blog">Blog</a>
+                            <a
+                              href="#"
+                              name="Festival / Images"
+                              onClick={() =>
+                                this.props.linkfun("Festivals / Images")
+                              }
+                            >
+                              Festival / Images
+                            </a>
                           </li>
                           <li>
                             <a href="contact.html">Contact</a>
