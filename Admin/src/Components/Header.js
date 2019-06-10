@@ -3,6 +3,13 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 
 export default class Header extends Component {
+  state = {
+    selectedlink: ""
+  };
+  setchildlink() {
+    // alert(newlink);
+    // this.setState({ selectedlink: newlink });
+  }
   render() {
     var style = {
       height: 60
@@ -12,6 +19,7 @@ export default class Header extends Component {
       background: "rgb(255,0,0)",
       marginLeft: 5
     };
+
     return (
       <Router>
         <header class="header">
@@ -44,13 +52,25 @@ export default class Header extends Component {
                           </li>
 
                           <li>
-                            <Link to="/companies">Companies</Link>
+                            <button
+                              name="Companies"
+                              onClick={() => this.props.linkfun("Companies")}
+                              // onClick={this.setchildlink.bind(this, name)}
+                            >
+                              Companies
+                            </button>
                           </li>
                           <li>
-                            <a href="/blog">Blog</a>
-                          </li>
-                          <li>
-                            <a href="contact.html">Contact</a>
+                            <button
+                              name="Festival_Images"
+                              onClick={() =>
+                                this.props.linkfun("Festival_Images")
+                              }
+
+                              // onClick={this.setchildlink.bind(this, name)}
+                            >
+                              Festival/Images
+                            </button>
                           </li>
                           <li>
                             <a href="/login">Login / Signup</a>
@@ -82,3 +102,6 @@ export default class Header extends Component {
     );
   }
 }
+// Header.propTypes = {
+//   linkfun: React.PropTypes.func
+// };
