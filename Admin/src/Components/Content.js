@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-
+import Company from "./Company";
+import Festivals_Images from "./Festivals_Images";
 export default class Content extends Component {
   render() {
     if (this.props.linktoRender == "Companies") var val = "Companies";
@@ -9,9 +10,13 @@ export default class Content extends Component {
       <body>
         <center>
           <h1>Shree Ganesh !</h1>
-          <h1>{this.props.linktoRender}</h1>
-
-          <h2 />
+          {this.props.linktoRender == "Companies" ? (
+            <Company />
+          ) : this.props.linktoRender == "Festivals_Images" ? (
+            <Festivals_Images />
+          ) : (
+            <h6>Not Found</h6>
+          )}
         </center>
       </body>
     );
