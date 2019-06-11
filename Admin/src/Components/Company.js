@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { throws } from "assert";
+
 class Company extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +15,8 @@ class Company extends Component {
       tagline: "",
       phone: "",
       logoFile: null,
-      count: 1
+      count: 1,
+      active: ""
     };
   }
   componentDidMount() {
@@ -46,7 +47,7 @@ class Company extends Component {
       phone: this.state.phone,
       logoFile: this.state.logoFile
     };
-    console.log(data);
+
     fetch("http://localhost:5000/add/company", {
       method: "POST",
       headers: {
@@ -75,6 +76,52 @@ class Company extends Component {
   logChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
+
+  handleActivated(e, id) {
+    const comid = id;
+    var data = {
+      comid: id
+    };
+
+    let p = this.state.allCompanies.map(e => {
+      if (e.cid === id) e.is_active = 1 - e.is_active;
+      return e;
+    });
+    this.setState({ allCompanies: p });
+
+    console.log(data);
+    fetch("http://localhost:5000/edit/company", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    })
+      .then(function(response) {
+        if (response.status >= 400) {
+          throw new Error("Bad Response from server");
+        }
+        return response.json();
+      })
+      .then(function(data) {
+        console.log(data);
+        if (data === "success") {
+          // e.target.checked : !e.target.checked;
+          // this.setState({ msg: "Company Edited", active: !e.target.checked });
+        }
+      })
+      .catch(function(err) {
+        console.log(err);
+      });
+
+    // this.setState({  });
+  }
+
+  // handleCheckboxChange = (event, cid) => {
+  //   // console.log("Hello" + cid);
+  // };
+
   render() {
     const mystyle = {
       marginLeft: "auto",
@@ -97,14 +144,15 @@ class Company extends Component {
             data-keyboard="false"
           >
             {" "}
-            Add Comapny
+            ADD COMPANY
           </button>
         </center>
         <br />
         <div className="panel panel-default p50 uth-panel">
           <table
-            className="table table-bordered"
+            className="table table-hover"
             style={{
+              flex: 0.8,
               marginLeft: "auto",
               marginRight: "auto",
               marginTop: 0,
@@ -120,7 +168,7 @@ class Company extends Component {
                 <th>Person</th>
                 <th>Phone number</th>
                 <th>Address</th>
-                <th>Action</th>
+                <th>Activated</th>
               </tr>
             </thead>
             <tbody>
@@ -136,7 +184,19 @@ class Company extends Component {
                   <td>{com.phone}</td>
                   <td>{com.address}</td>
                   <td>
-                    <a>Edit</a>|<a>Delete</a>
+                    <a>
+                      <label class="switch">
+                        <input
+                          type="checkbox"
+                          name="active"
+                          checked={this.state.checked}
+                          onChange={e => this.handleActivated(e, com.cid)}
+                          checked={com.is_active == 1 ? "true" : ""}
+                          // onChange={console.log("HEllo")}
+                        />
+                        <span class="slider round" />
+                      </label>
+                    </a>
                   </td>
                 </tr>
               ))}

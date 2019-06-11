@@ -88,4 +88,34 @@ app.get("/list/company", (req, res) => {
     res.send({ express: result });
   });
 });
+
+var val;
+var set = 0;
+var todo;
+app.post("/edit/company", (req, res) => {
+  let comid = req.body.comid;
+
+  let sql = "SELECT is_active from tblcompany where cid='" + comid + "'";
+  let query = con.query(sql, (err, result) => {
+    if (err) throw err;
+    val = result[0].is_active;
+    if (val == 0) todo = 1;
+    else todo = 0;
+
+    let sql1 =
+      "UPDATE tblcompany SET is_active = '" +
+      todo +
+      "' where cid=" +
+      comid +
+      "";
+    console.log(sql1);
+    let query1 = con.query(sql1, (err, result) => {
+      if (err) throw err;
+      console.log(result);
+      // res.send(JSON.stringify(result));
+    });
+  });
+
+  //
+});
 app.listen(port, () => console.log(`Listening on port ${port}`));
