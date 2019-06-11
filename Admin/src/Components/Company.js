@@ -83,11 +83,11 @@ class Company extends Component {
       comid: id
     };
 
-    let p = this.state.allCompanies.map(e => {
-      if (e.cid === id) e.is_active = 1 - e.is_active;
-      return e;
-    });
-    this.setState({ allCompanies: p });
+    // let p = this.state.allCompanies.map(e => {
+    //   if (e.cid === id) e.is_active = 1 - e.is_active;
+    //   return e;
+    // });
+    // this.setState({ allCompanies: p });
 
     console.log(data);
     fetch("http://localhost:5000/edit/company", {
@@ -104,12 +104,17 @@ class Company extends Component {
         }
         return response.json();
       })
-      .then(function(data) {
-        console.log(data);
-        if (data === "success") {
-          // e.target.checked : !e.target.checked;
-          // this.setState({ msg: "Company Edited", active: !e.target.checked });
-        }
+      .then( () => {
+        console.log("heello");
+        fetch("http://localhost:5000/list/company")
+          .then(response => response.json())
+          .then(e => this.setState({ allCompanies: e.express, data: true }));
+        // console.log(data);
+
+        // if (data === "success") {
+        //   // e.target.checked : !e.target.checked;
+        //   // this.setState({ msg: "Company Edited", active: !e.target.checked });
+        // }
       })
       .catch(function(err) {
         console.log(err);

@@ -112,7 +112,7 @@ app.post("/edit/company", (req, res) => {
     let query1 = con.query(sql1, (err, result) => {
       if (err) throw err;
       console.log(result);
-      // res.send(JSON.stringify(result));
+      res.send(JSON.stringify(result));
     });
   });
 
