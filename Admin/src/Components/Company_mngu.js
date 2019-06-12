@@ -1,12 +1,9 @@
 import React, { Component } from "react";
-
+import { throws } from "assert";
 class Company extends Component {
-<<<<<<< HEAD
   constructor(props) {
     super(props);
     this.state = {
-      allCompanies: [],
-      data: false,
       company: "",
       pname: "",
       email: "",
@@ -15,25 +12,17 @@ class Company extends Component {
       address: "",
       tagline: "",
       phone: "",
-      logoFile: null,
-      count: 1,
-      active: ""
+      logoFile: null
     };
   }
-  componentDidMount() {
-    fetch("http://localhost:5000/list/company")
-      .then(response => response.json())
-      .then(e => this.setState({ allCompanies: e.express, data: true }));
-  }
-
   logChange = e => {
     // console.log(e.target.files[0]);
     this.setState({ [e.target.name]: e.target.value });
   };
 
   imgChange = e => {
-    this.setState({ logoFile: e.target.files[0].name });
-    // console.log(e.target.files[0]);
+    this.setState({ logoFile: e.target.files[0] });
+    console.log("dd");
   };
   handleSubmit = e => {
     e.preventDefault();
@@ -45,11 +34,10 @@ class Company extends Component {
       cpwd: this.state.cpwd,
       address: this.state.address,
       tagline: this.state.tagline,
-      phone: this.state.phone,
-      logoFile: this.state.logoFile
+      phone: this.state.phone
     };
-
-    fetch("http://localhost:5000/add/company", {
+    console.log(data);
+    fetch("http://localhost:5000/new/company", {
       method: "POST",
       headers: {
         Accept: "application/json, text/plain, */*",
@@ -66,67 +54,14 @@ class Company extends Component {
       .then(function(data) {
         console.log(data);
         if (data == "success") {
-          this.setState({ msg: "Company Added" });
+          alert("added");
+          //   this.setState({ msg: "Company Added" });
         }
       })
       .catch(function(err) {
         console.log(err);
       });
   };
-
-  logChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
-  }
-
-  handleActivated(e, id) {
-    const comid = id;
-    var data = {
-      comid: id
-    };
-
-    // let p = this.state.allCompanies.map(e => {
-    //   if (e.cid === id) e.is_active = 1 - e.is_active;
-    //   return e;
-    // });
-    // this.setState({ allCompanies: p });
-
-    console.log(data);
-    fetch("http://localhost:5000/edit/company", {
-      method: "POST",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    })
-      .then(function(response) {
-        if (response.status >= 400) {
-          throw new Error("Bad Response from server");
-        }
-        return response.json();
-      })
-      .then( () => {
-        console.log("heello");
-        fetch("http://localhost:5000/list/company")
-          .then(response => response.json())
-          .then(e => this.setState({ allCompanies: e.express, data: true }));
-        // console.log(data);
-
-        // if (data === "success") {
-        //   // e.target.checked : !e.target.checked;
-        //   // this.setState({ msg: "Company Edited", active: !e.target.checked });
-        // }
-      })
-      .catch(function(err) {
-        console.log(err);
-      });
-
-    // this.setState({  });
-  }
-
-  // handleCheckboxChange = (event, cid) => {
-  //   // console.log("Hello" + cid);
-  // };
 
   render() {
     const mystyle = {
@@ -139,7 +74,7 @@ class Company extends Component {
 
     return (
       <body>
-        <h1 align="center"> COMPANY </h1>
+        <h1 align="center"> Comapny</h1>
         <center>
           <button
             type="button"
@@ -150,65 +85,9 @@ class Company extends Component {
             data-keyboard="false"
           >
             {" "}
-            ADD COMPANY
+            Add Comapny
           </button>
         </center>
-        <br />
-        <div className="panel panel-default p50 uth-panel">
-          <table
-            className="table table-hover"
-            style={{
-              flex: 0.8,
-              marginLeft: "auto",
-              marginRight: "auto",
-              marginTop: 0,
-              marginBottom: 0
-            }}
-          >
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Company</th>
-                <th>Email</th>
-                <th>Tagline</th>
-                <th>Person</th>
-                <th>Phone number</th>
-                <th>Address</th>
-                <th>Activated</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.allCompanies.map(com => (
-                <tr>
-                  <td>
-                    <b>{this.state.count}</b>
-                  </td>
-                  <td>{com.cname} </td>
-                  <td>{com.email}</td>
-                  <td>{com.tagline}</td>
-                  <td>{com.personname}</td>
-                  <td>{com.phone}</td>
-                  <td>{com.address}</td>
-                  <td>
-                    <a>
-                      <label class="switch">
-                        <input
-                          type="checkbox"
-                          name="active"
-                          checked={this.state.checked}
-                          onChange={e => this.handleActivated(e, com.cid)}
-                          checked={com.is_active == 1 ? "true" : ""}
-                          // onChange={console.log("HEllo")}
-                        />
-                        <span class="slider round" />
-                      </label>
-                    </a>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
 
         <div class="modal fade" id="modalForm" role="dialog">
           <div class="modal-dialog modal-lg">
@@ -253,7 +132,6 @@ class Company extends Component {
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Contact Person</label>
-
                         <input
                           type="text"
                           class="form-control"
@@ -353,7 +231,6 @@ class Company extends Component {
                       </div>
                     </div>
                   </div>
-
                   <div class="row">
                     <div class="col-sm-5">
                       <div class="form-group">
@@ -393,15 +270,6 @@ class Company extends Component {
           </div>
         </div>
         <br />
-=======
-  // state = {  }
-  render() {
-    return (
-      <body>
-        <center>
-          <h1>i am Company componant</h1>
-        </center>
->>>>>>> ishan_local
       </body>
     );
   }

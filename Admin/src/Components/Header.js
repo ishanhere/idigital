@@ -1,15 +1,10 @@
 import React, { Component } from "react";
-import Content from "./Content";
 import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 
 export default class Header extends Component {
   state = {
     selectedlink: ""
   };
-  setchildlink() {
-    // alert(newlink);
-    // this.setState({ selectedlink: newlink });
-  }
   render() {
     var style = {
       height: 60
@@ -104,6 +99,3 @@ export default class Header extends Component {
     );
   }
 }
-// Header.propTypes = {
-//   linkfun: React.PropTypes.func
-// };
