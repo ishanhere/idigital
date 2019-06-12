@@ -84,7 +84,7 @@ app.get("/list/company", (req, res) => {
   let sql = "SELECT * from tblcompany";
   let query = con.query(sql, (err, result) => {
     if (err) throw err;
-    console.log(result);
+    // console.log(result);
     res.send({ express: result });
   });
 });
