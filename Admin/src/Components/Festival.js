@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Card from "./Card";
 
 export default class Festival extends Component {
   constructor(props) {
@@ -6,8 +7,17 @@ export default class Festival extends Component {
     this.state = {
       festivals: [],
       data: false
+      // festivaltoshowimages: null
     };
+    // this.setfestival = this.setfestival.bind(this);
   }
+  // setfestival = newfestival => {
+  //   this.setState({
+  //     festivaltoshowimages: newfestival
+  //   });
+  //   alert("new state:" + newfestival);
+  //   this.forceUpdate();
+  // };
   componentDidMount() {
     fetch("http://localhost:5000/api/listfestivals")
       .then(response => response.json())
@@ -33,21 +43,13 @@ export default class Festival extends Component {
   }
 }
 
-function Card(props) {
-  return (
-    <div className="col-xl-4 col-md-4">
-      <div className="ministry">
-        <div className="ministry_image">
-          <img
-            src="images/ministries_1.jpg"
-            alt="https://unsplash.com/@davidbeale"
-          />
-        </div>
-        <a href="">
-          {" "}
-          <div className="ministry_title">{props.item.fname}</div>
-        </a>
-      </div>
-    </div>
-  );
-}
+// function Card(props) {
+//   let images = "";
+//   function handleClick(e, newfestivalid) {
+//     // e.preventDefault();
+//     fetch("http://localhost:5000/api/listfestivals")
+//       .then(response => response.json())
+//       .then(e => this.setState({ images: e.express, data: true }));
+//     alert(images);
+//   }
+// }

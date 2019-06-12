@@ -5,20 +5,31 @@ class Festivals_Images extends Component {
     super(props);
     this.state = {
       festival: "",
-      keywords: ""
+      keywords: "",
+      festivaltoshowimages: null
     };
+    // this.setfestival = this.setfestival.bind(this);
   }
+
+  // setfestival = newfestival => {
+  //   this.setState({
+  //     festivaltoshowimages: newfestival
+  //   });
+  //   alert(newfestival);
+  //   this.forceUpdate();
+  // };
+
   logChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
   handleSubmit = e => {
     e.preventDefault();
-    alert("here");
+    // alert("here");
     var data = {
       festival: this.state.festival,
       keywords: this.state.keywords
     };
-    alert(data.festival);
+    // alert(data.festival);
     // console.log(data);
     fetch("http://localhost:5000/api/addfestivals", {
       method: "POST",
@@ -35,7 +46,7 @@ class Festivals_Images extends Component {
         return response.json();
       })
       .then(function(data) {
-        if (data == "success") {
+        if (data === "success") {
           alert("added");
           //   this.setState({ msg: "Festival Added" });
         }
@@ -49,6 +60,8 @@ class Festivals_Images extends Component {
     return (
       <body>
         <center>
+          {/* INM 10-06-2019 */}
+          {/* modal for add Festivals start */}
           <div>
             <button
               type="button"
@@ -133,7 +146,7 @@ class Festivals_Images extends Component {
                     >
                       Close
                     </button>
-                    <button type="submit" class="btn btn-default submitBtn">
+                    <button type="submit" class="btn btn-danger submitBtn">
                       Add
                     </button>
                   </div>
@@ -141,16 +154,15 @@ class Festivals_Images extends Component {
               </div>
             </div>
           </div>
-          <br />
+          {/* modal for add Festivals end */}
         </center>
         <Festival />
+        {/* INM 11-06-2019 */}
+        {/* modal for add/show Festivals_Images start */}
+        <h3>{this.state.festivaltoshowimages}</h3>;
+        {/* modal for add/show Festivals_Images end */}
       </body>
     );
   }
 }
-
-// {/* <center>
-//           ({this.state.data})? return <div>{festivalitems}</div>: else return{" "}
-//           {/* {<div>Loading...</div>}; */}
-//         </center> */}
 export default Festivals_Images;
