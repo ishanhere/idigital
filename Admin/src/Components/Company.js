@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
 class Company extends Component {
-<<<<<<< HEAD
   constructor(props) {
     super(props);
     this.state = {
@@ -105,7 +104,7 @@ class Company extends Component {
         }
         return response.json();
       })
-      .then( () => {
+      .then(() => {
         console.log("heello");
         fetch("http://localhost:5000/list/company")
           .then(response => response.json())
@@ -393,15 +392,6 @@ class Company extends Component {
           </div>
         </div>
         <br />
-=======
-  // state = {  }
-  render() {
-    return (
-      <body>
-        <center>
-          <h1>i am Company componant</h1>
-        </center>
->>>>>>> ishan_local
       </body>
     );
   }
