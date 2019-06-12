@@ -65,7 +65,7 @@ export default class Header extends Component {
                               href="#"
                               name="Festival / Images"
                               onClick={() =>
-                                this.props.linkfun("Festivals / Images")
+                                this.props.linkfun("Festivals_Images")
                               }
                             >
                               Festival / Images
