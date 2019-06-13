@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import axios from "axios";
+const path = require("path");
 
 class Company extends Component {
   constructor(props) {
@@ -15,6 +17,7 @@ class Company extends Component {
       tagline: "",
       phone: "",
       logoFile: null,
+      logoFileName: null,
       count: 1,
       active: ""
     };
@@ -31,11 +34,26 @@ class Company extends Component {
   };
 
   imgChange = e => {
-    this.setState({ logoFile: e.target.files[0].name });
+    this.setState({ logoFile: e.target.files[0] });
+    var logoName = path.extname(e.target.files[0].name);
+    var logonamedone = JSON.stringify(Date.now()) + logoName;
+    this.setState({ logoFileName: logonamedone });
     // console.log(e.target.files[0]);
+    console.log(logonamedone);
   };
+
+  uploadImage = () => {
+    const fd = new FormData();
+    fd.append("myfile", this.state.logoFile, this.state.logoFileName);
+    axios
+      .post("http://localhost:5000/upload", fd)
+      .then(res => console.log(res))
+      .catch(e => console.log(e));
+  };
+
   handleSubmit = e => {
     e.preventDefault();
+    this.uploadImage();
     var data = {
       company: this.state.company,
       pname: this.state.pname,
@@ -45,7 +63,7 @@ class Company extends Component {
       address: this.state.address,
       tagline: this.state.tagline,
       phone: this.state.phone,
-      logoFile: this.state.logoFile
+      logoFile: this.state.logoFileName
     };
 
     fetch("http://localhost:5000/add/company", {
@@ -83,11 +101,11 @@ class Company extends Component {
       comid: id
     };
 
-    // let p = this.state.allCompanies.map(e => {
-    //   if (e.cid === id) e.is_active = 1 - e.is_active;
-    //   return e;
-    // });
-    // this.setState({ allCompanies: p });
+    let p = this.state.allCompanies.map(e => {
+      if (e.cid === id) e.is_active = 1 - e.is_active;
+      return e;
+    });
+    this.setState({ allCompanies: p });
 
     console.log(data);
     fetch("http://localhost:5000/edit/company", {
@@ -104,7 +122,7 @@ class Company extends Component {
         }
         return response.json();
       })
-      .then( () => {
+      .then(() => {
         console.log("heello");
         fetch("http://localhost:5000/list/company")
           .then(response => response.json())
@@ -128,6 +146,7 @@ class Company extends Component {
   // };
 
   render() {
+    let i = 1;
     const mystyle = {
       marginLeft: "auto",
       marginRight: "auto",
@@ -155,7 +174,7 @@ class Company extends Component {
         <br />
         <div className="panel panel-default p50 uth-panel">
           <table
-            className="table table-hover"
+            className="table w-75"
             style={{
               flex: 0.8,
               marginLeft: "auto",
@@ -173,6 +192,7 @@ class Company extends Component {
                 <th>Person</th>
                 <th>Phone number</th>
                 <th>Address</th>
+                <th>Logo</th>
                 <th>Activated</th>
               </tr>
             </thead>
@@ -180,7 +200,7 @@ class Company extends Component {
               {this.state.allCompanies.map(com => (
                 <tr>
                   <td>
-                    <b>{this.state.count}</b>
+                    <b>{i++}</b>
                   </td>
                   <td>{com.cname} </td>
                   <td>{com.email}</td>
@@ -188,6 +208,12 @@ class Company extends Component {
                   <td>{com.personname}</td>
                   <td>{com.phone}</td>
                   <td>{com.address}</td>
+                  <td>
+                    <img
+                      src={"http://localhost:3000/files/" + com.logo}
+                      style={{ height: 50, width: 50 }}
+                    />
+                  </td>
                   <td>
                     <a>
                       <label class="switch">
@@ -362,11 +388,9 @@ class Company extends Component {
                           &nbsp;
                           <span class="hidden-xs">Browse Logo</span>
                           <input
-                            id="pic"
-                            name="pic"
                             type="file"
                             onChange={this.imgChange}
-                            accept="image/*"
+                            name="myfile"
                           />
                         </div>
                       </div>
