@@ -9,9 +9,34 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      link: null
+      link: null,
+      cid: 0,
+      cname: "",
+      email: "",
+      tagline: "",
+      personname: "",
+      phone: "",
+      address: "",
+      logo: ""
     };
     this.setlink = this.setlink.bind(this);
+    this.setcompany = this.setcompany.bind(this);
+  }
+
+  setcompany(cid, cname, email, tagline, personname, phone, address, logo) {
+    // alert(com);
+    this.setState({
+      cid: cid,
+      cname: cname,
+      email: email,
+      tagline: tagline,
+      personname: personname,
+      phone: phone,
+      address: address,
+      logo: logo,
+      link: "editor"
+    });
+    this.forceUpdate();
   }
 
   setlink(newlink) {
@@ -24,8 +49,12 @@ class App extends React.Component {
     return (
       <div className="App">
         <Header linkfun={this.setlink} />
-        <Content linktoRender={this.state.link} />
-        <Footer />
+        <Content
+          linktoRender={this.state.link}
+          CompanyToDisplay={this.setcompany}
+          cid={this.state.cid}
+        />
+        {/* <Footer /> */}
       </div>
     );
   }

@@ -8,55 +8,55 @@ export default class Footer extends Component {
       marginLeft: 5
     };
     return (
-      <footer class="footer">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-6 footer_col">
-              <div class="logo_container">
-                <div class="logo">
+      <footer className="footer">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-6 footer_col">
+              <div className="logo_container">
+                <div className="logo">
                   <a href="#">
                     <span>iDigital</span>
                     <img src="images/icon1.png" alt="" style={imgstyle} />
                   </a>
                 </div>
-                <div class="logo_subtitle">Cards & More</div>
+                <div className="logo_subtitle">Cards & More</div>
               </div>
-              <div class="footer_social">
+              <div className="footer_social">
                 <ul>
                   <li>
                     <a href="https://www.google.com/">
-                      <i class="fa fa-google-plus" aria-hidden="true" />
+                      <i className="fa fa-google-plus" aria-hidden="true" />
                     </a>
                   </li>
                   <li>
                     <a href="https://www.pinterest.com/">
-                      <i class="fa fa-pinterest" aria-hidden="true" />
+                      <i className="fa fa-pinterest" aria-hidden="true" />
                     </a>
                   </li>
                   <li>
                     <a href="https://www.facebook.com/">
-                      <i class="fa fa-facebook" aria-hidden="true" />
+                      <i className="fa fa-facebook" aria-hidden="true" />
                     </a>
                   </li>
                   <li>
                     <a href="https://twitter.com/">
-                      <i class="fa fa-twitter" aria-hidden="true" />
+                      <i className="fa fa-twitter" aria-hidden="true" />
                     </a>
                   </li>
                 </ul>
               </div>
             </div>
 
-            <div class="col-lg-6 footer_col">
-              <div class="footer_contact">
-                <div class="footer_title">Contact Us</div>
+            <div className="col-lg-6 footer_col">
+              <div className="footer_contact">
+                <div className="footer_title">Contact Us</div>
                 <ul>
                   <li>
                     <span>Address: </span>343,344 - Massimo A business Bench
                     Square , opp. tirupati shyam villa, 120ft canal road, Althan
                     Road, Althan Bhimrad road, Surat, Gujarat 395007
                   </li>
-                  {/* <li class="footer_contact_phone">
+                  {/* <li className="footer_contact_phone">
                     <span>Phone: </span>
                     <div>
                       <div> +91 81608 19878</div>
@@ -81,11 +81,11 @@ export default class Footer extends Component {
           </div>
         </div>
 
-        <div class="copyright text-center">
+        <div className="copyright text-center">
           Copyright &copy;
           <script>document.write(new Date().getFullYear());</script> All rights
           reserved | This template is made with{" "}
-          <i class="fa fa-heart-o" aria-hidden="true" /> by{" "}
+          <i className="fa fa-heart-o" aria-hidden="true" /> by{" "}
           <a href="https://colorlib.com" target="_blank">
             Colorlib
           </a>

@@ -14,20 +14,20 @@ export default class Header extends Component {
     };
     return (
       <Router>
-        <header class="header">
+        <header className="header">
           {/* <!-- Header Content --> */}
 
-          <div class="header_container">
-            <div class="container">
-              <div class="row">
-                <div class="col">
+          <div className="header_container">
+            <div className="container">
+              <div className="row">
+                <div className="col">
                   <div
-                    class="header_content d-flex flex-row align-items-center justify-content-start"
+                    className="header_content d-flex flex-row align-items-center justify-content-start"
                     style={style}
                   >
                     {/* <!-- Logo --> */}
-                    <div class="logo_container">
-                      <div class="logo">
+                    <div className="logo_container">
+                      <div className="logo">
                         <a href="#">
                           <span>iDigital</span>
                           <img src="images/icon1.png" alt="" style={imgstyle} />
@@ -36,16 +36,15 @@ export default class Header extends Component {
                     </div>
 
                     {/* <!-- Navigation and Search --> */}
-                    <div class="header_nav_container ml-auto">
-                      <nav class="main_nav">
+                    <div className="header_nav_container ml-auto">
+                      <nav className="main_nav">
                         <ul>
-                          <li class="active">
+                          <li className="active">
                             <a href="/">Home</a>
                           </li>
 
-                          <li class="">
+                          <li className="">
                             <a
-                              href="#"
                               name="Companies"
                               onClick={() => this.props.linkfun("Companies")}
                             >
@@ -54,7 +53,6 @@ export default class Header extends Component {
                           </li>
                           <li>
                             <a
-                              href="#"
                               name="Festival / Images"
                               onClick={() =>
                                 this.props.linkfun("Festivals_Images")
@@ -83,8 +81,8 @@ export default class Header extends Component {
 
                     {/* <!-- Hamburger --> */}
 
-                    <div class="hamburger ml-auto">
-                      <i class="fa fa-bars" aria-hidden="true" />
+                    <div className="hamburger ml-auto">
+                      <i className="fa fa-bars" aria-hidden="true" />
                     </div>
                   </div>
                 </div>

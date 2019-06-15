@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+// import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 
 class Company extends Component {
   constructor(props) {
@@ -104,7 +105,7 @@ class Company extends Component {
         }
         return response.json();
       })
-      .then( () => {
+      .then(() => {
         console.log("heello");
         fetch("http://localhost:5000/list/company")
           .then(response => response.json())
@@ -137,12 +138,12 @@ class Company extends Component {
     };
 
     return (
-      <body>
+      <div>
         <h1 align="center"> COMPANY </h1>
         <center>
           <button
             type="button"
-            class="btn btn-danger"
+            className="btn btn-danger"
             data-toggle="modal"
             data-target="#modalForm"
             data-backdrop="static"
@@ -178,11 +179,26 @@ class Company extends Component {
             </thead>
             <tbody>
               {this.state.allCompanies.map(com => (
-                <tr>
+                <tr key={com.cid}>
                   <td>
                     <b>{this.state.count}</b>
                   </td>
-                  <td>{com.cname} </td>
+                  <td
+                    onClick={() =>
+                      this.props.CompanyToDisplay(
+                        com.cid,
+                        com.cname,
+                        com.email,
+                        com.tagline,
+                        com.personname,
+                        com.phone,
+                        com.address,
+                        com.logo
+                      )
+                    }
+                  >
+                    {com.cname}{" "}
+                  </td>
                   <td>{com.email}</td>
                   <td>{com.tagline}</td>
                   <td>{com.personname}</td>
@@ -190,7 +206,7 @@ class Company extends Component {
                   <td>{com.address}</td>
                   <td>
                     <a>
-                      <label class="switch">
+                      <label className="switch">
                         <input
                           type="checkbox"
                           name="active"
@@ -199,7 +215,7 @@ class Company extends Component {
                           checked={com.is_active == 1 ? "true" : ""}
                           // onChange={console.log("HEllo")}
                         />
-                        <span class="slider round" />
+                        <span className="slider round" />
                       </label>
                     </a>
                   </td>
@@ -209,18 +225,18 @@ class Company extends Component {
           </table>
         </div>
 
-        <div class="modal fade" id="modalForm" role="dialog">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
+        <div className="modal fade" id="modalForm" role="dialog">
+          <div className="modal-dialog modal-lg">
+            <div className="modal-content">
               {/* <!-- Modal Header --> */}
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">
-                  <span aria-hidden="true">&times;</span>
-                  <span class="sr-only">Close</span>
-                </button>
-                <h4 class="modal-title" id="myModalLabel">
+              <div className="modal-header">
+                <h4 className="modal-title" id="myModalLabel">
                   Sign Up
                 </h4>
+                <button type="button" className="close" data-dismiss="modal">
+                  <span aria-hidden="true">&times;</span>
+                  <span className="sr-only">Close</span>
+                </button>
               </div>
 
               <form
@@ -232,16 +248,16 @@ class Company extends Component {
               >
                 {/* <!-- Modal Body --> */}
 
-                <div class="modal-body">
-                  <p class="statusMsg" />
-                  <div class="row">
-                    <div class="col-sm-6">
-                      <div class="form-group">
+                <div className="modal-body">
+                  <p className="statusMsg" />
+                  <div className="row">
+                    <div className="col-sm-6">
+                      <div className="form-group">
                         <label>Company</label>
 
                         <input
                           type="text"
-                          class="form-control"
+                          className="form-control"
                           id="cname"
                           name="company"
                           placeholder="Enter Company"
@@ -249,13 +265,13 @@ class Company extends Component {
                         />
                       </div>
                     </div>
-                    <div class="col-sm-6">
-                      <div class="form-group">
+                    <div className="col-sm-6">
+                      <div className="form-group">
                         <label>Contact Person</label>
 
                         <input
                           type="text"
-                          class="form-control"
+                          className="form-control"
                           id="pname"
                           name="pname"
                           placeholder="Enter Person Name"
@@ -265,12 +281,12 @@ class Company extends Component {
                     </div>
                   </div>
 
-                  <div class="form-group">
+                  <div className="form-group">
                     <label>Email</label>
 
                     <input
                       type="email"
-                      class="form-control"
+                      className="form-control"
                       id="email"
                       name="email"
                       placeholder="Enter email"
@@ -278,14 +294,14 @@ class Company extends Component {
                     />
                   </div>
 
-                  <div class="row">
-                    <div class="col-sm-6">
-                      <div class="form-group">
+                  <div className="row">
+                    <div className="col-sm-6">
+                      <div className="form-group">
                         <label>Password</label>
 
                         <input
                           type="password"
-                          class="form-control"
+                          className="form-control"
                           id="pwd"
                           name="pwd"
                           placeholder="Enter Password"
@@ -293,13 +309,13 @@ class Company extends Component {
                         />
                       </div>
                     </div>
-                    <div class="col-sm-6">
-                      <div class="form-group">
+                    <div className="col-sm-6">
+                      <div className="form-group">
                         <label>Confirm Password</label>
 
                         <input
                           type="password"
-                          class="form-control"
+                          className="form-control"
                           id="cpwd"
                           name="cpwd"
                           placeholder="Enter Confirm Password"
@@ -309,12 +325,12 @@ class Company extends Component {
                     </div>
                   </div>
 
-                  <div class="form-group">
+                  <div className="form-group">
                     <label>Address</label>
 
                     <input
                       type="text"
-                      class="form-control"
+                      className="form-control"
                       id="add"
                       name="address"
                       placeholder="Enter Company Address"
@@ -322,14 +338,14 @@ class Company extends Component {
                     />
                   </div>
 
-                  <div class="row">
-                    <div class="col-sm-6">
-                      <div class="form-group">
+                  <div className="row">
+                    <div className="col-sm-6">
+                      <div className="form-group">
                         <label>TagLine</label>
 
                         <input
                           type="text"
-                          class="form-control"
+                          className="form-control"
                           id="tagline"
                           name="tagline"
                           placeholder="Enter Company Tagline"
@@ -337,13 +353,13 @@ class Company extends Component {
                         />
                       </div>
                     </div>
-                    <div class="col-sm-6">
-                      <div class="form-group">
+                    <div className="col-sm-6">
+                      <div className="form-group">
                         <label>Phone Number</label>
 
                         <input
                           type="text"
-                          class="form-control"
+                          className="form-control"
                           id="phone"
                           name="phone"
                           placeholder="Enter Phone"
@@ -353,14 +369,14 @@ class Company extends Component {
                     </div>
                   </div>
 
-                  <div class="row">
-                    <div class="col-sm-5">
-                      <div class="form-group">
-                        <label class="control-label">Logo </label>
-                        <div class="btn btn-default btn-file">
-                          <i class="fa fa-folder-open" />
+                  <div className="row">
+                    <div className="col-sm-5">
+                      <div className="form-group">
+                        <label className="control-label">Logo </label>
+                        <div className="btn btn-default btn-file">
+                          <i className="fa fa-folder-open" />
                           &nbsp;
-                          <span class="hidden-xs">Browse Logo</span>
+                          <span className="hidden-xs">Browse Logo</span>
                           <input
                             id="pic"
                             name="pic"
@@ -375,15 +391,15 @@ class Company extends Component {
                 </div>
 
                 {/* <!-- Modal Footer --> */}
-                <div class="modal-footer">
+                <div className="modal-footer">
                   <button
                     type="button"
-                    class="btn btn-default"
+                    className="btn btn-default"
                     data-dismiss="modal"
                   >
                     Close
                   </button>
-                  <button type="submit" class="btn btn-default submitBtn">
+                  <button type="submit" className="btn btn-default submitBtn">
                     SUBMIT
                   </button>
                 </div>
@@ -392,7 +408,7 @@ class Company extends Component {
           </div>
         </div>
         <br />
-      </body>
+      </div>
     );
   }
 }

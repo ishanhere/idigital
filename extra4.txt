@@ -1,0 +1,199 @@
+// var $ = require("jQuery");
+// import $ from "jquery";
+// var webpack = require("webpack");
+// const curl = require("curl");
+// const jsdom = require("jsdom");
+
+// function parseData(html) {
+//   const { JSDOM } = jsdom;
+//   const dom = new JSDOM(html);
+//   const $ = require("jquery")(dom.window);
+//   //let's start extracting the data
+//   //... start using jquery as $ like you would in a browser
+// }
+<div>
+        <link
+          href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet"
+        />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <div className="header" />
+        <div className="designArea">
+          <div className="canvasArea">
+            <div className="canvasContainer">
+              <div id="canvas" />
+            </div>
+            <div id="layer" />
+          </div>
+          <div className="toolBoxArea">
+            <form className="toolBar">
+              <input
+                type="radio"
+                name="toolRadio"
+                id="toolImg"
+                onChange={showSubMenu(0)}
+                checked
+              />
+              <label className="toolDiv" for="toolImg">
+                <i className="material-icons">add_photo_alternate</i>
+                <span>Images</span>
+              </label>
+              <input
+                type="radio"
+                name="toolRadio"
+                id="toolComp"
+                onChange={showSubMenu(1)}
+              />
+              <label className="toolDiv" for="toolComp">
+                <i className="material-icons">assignment</i>
+                <span>Company</span>
+              </label>
+              <input
+                type="radio"
+                name="toolRadio"
+                id="toolText"
+                onChange="showSubMenu(2)"
+              />
+              <label className="toolDiv" for="toolText">
+                <i className="material-icons">text_fields</i>
+                <span>Text</span>
+              </label>
+              <input
+                type="radio"
+                name="toolRadio"
+                id="toolColor"
+                onChange={showSubMenu(3)}
+              />
+              <label className="toolDiv" for="toolColor">
+                <i className="material-icons">color_lens</i>
+                <span>Background</span>
+              </label>
+              <input
+                type="radio"
+                name="toolRadio"
+                id="toolSave"
+                onChange={showSubMenu(4)}
+              />
+              <label className="toolDiv" for="toolSave">
+                <i className="material-icons">save</i>
+                <span>Save</span>
+              </label>
+            </form>
+            <div className="subMenuBox">
+              <div className="subMenuImg h-100 pd-10">
+                <span>Add Photo</span>
+                <form
+                  className="upldBtnDiv"
+                  method="POST"
+                  encType="multipart/form-data"
+                  action="#"
+                >
+                  <label className="btn">
+                    <input
+                      type="file"
+                      id="myfile"
+                      name="myfile"
+                      accept="image/*"
+                      onChange="readUrl(this)"
+                    />
+                    Upload Photo
+                  </label>
+                  <div className="imgDetailCover" id="imgDetail">
+                    <label className="cls" onclick="clsupld()">
+                      <button type="reset">×</button>
+                    </label>
+                    <table celspacing="10">
+                      <tbody>
+                        <tr>
+                          <td>
+                            <img src="#" id="showImg" />
+                          </td>
+                          <td>
+                            <input type="text" placeholder="Title of text" />
+                            <br />
+                            <input type="checkbox" id="chkSharable" />
+                            <label for="chkSharable">Sharable</label>
+                            <br />
+                            <select>
+                              <option>Diwali</option>
+                              <option>Holi</option>
+                            </select>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <input
+                              type="submit"
+                              className="btn-i"
+                              value="Upload"
+                            />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </form>
+                <hr className="hr-light" />
+                <div className="searchImgDiv">
+                  <input
+                    type="text"
+                    className="search"
+                    placeholder="Search..."
+                  />
+                  <i className="material-icons search">search</i>
+                </div>
+                <div className="imgList">
+                  <img
+                    src="./Images/download.png"
+                    onclick="addImgToCanvas(this)"
+                  />
+                  <img
+                    src="Images/Untitled.jpg"
+                    onclick="addImgToCanvas(this)"
+                  />
+                  <img src="Images/avk.jpg" onclick="addImgToCanvas(this)" />
+                  <img
+                    src="Images/download.png"
+                    onclick="addImgToCanvas(this)"
+                  />
+                  <img
+                    src="Images/Untitled.jpg"
+                    onclick="addImgToCanvas(this)"
+                  />
+                  <img src="Images/avk.jpg" onclick="addImgToCanvas(this)" />
+                  <img src="Images/avk.jpg" onclick="addImgToCanvas(this)" />
+                </div>
+              </div>
+              <div className="subMenuComp hght-0 ovf-hid op-0">
+                <span>Add Company</span>
+              </div>
+              <div className="subMenuText hght-0 ovf-hid op-0">
+                <span>Add Text</span>
+                <div className="upldBtnDiv">
+                  <input type="button" className="btn" value="Add Text" />
+                </div>
+              </div>
+              <div className="subMenuColor hght-0 ovf-hid op-0">
+                <span>Add BG Color</span>
+                <span className="mr-top-50">Select Background color</span>
+                <br />
+                <span className="clrPickerDiv">
+                  <input
+                    type="color"
+                    value="#ffffff"
+                    className="clrPicker"
+                    onChange="clrChange(this)"
+                  />
+                </span>
+              </div>
+              <div className="subMenuSave hght-0 ovf-hid op-0">
+                <span>Save Template</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <script src="JS/mainCanvas.js" />
+      </div>
