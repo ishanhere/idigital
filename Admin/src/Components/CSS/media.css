@@ -1,0 +1,13 @@
+@media only screen and (max-width: 600px){
+    .designArea{
+        flex-direction: column;
+    }
+    .canvasArea{
+        min-width: 500px;
+        flex: 1 0 75%;
+    }
+
+    .toolBoxArea{
+        min-width: 500px;
+    }
+}
