@@ -2,8 +2,9 @@
   "name": "idigital",
   "version": "1.0.0",
   "scripts": {
-    "client": "cd client && yarn start",
-    "server": "nodemon server.js",
+    "client": "cd admin && npm start",
+    "start": "npm server.js",
+    "server": "npm server.js",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   },
   "dependencies": {

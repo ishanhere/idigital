@@ -177,21 +177,83 @@ function ab() {
   alert("k");
 }
 
+(function() {
+  var container = document.getElementById("canvas");
+  var active = false;
+  var elmnt;
+  var currentX;
+  var currentY;
+  var initialX;
+  var initialY;
+  var xOffset = 0;
+  var yOffset = 0;
+
+  // container.addEventListener("touchstart", dragStart, { passive: false, capture: false });
+  // container.addEventListener("touchend", dragEnd, { passive: false, capture: false });
+  // container.addEventListener("touchmove", drag, { passive: false, capture: false });
+  function dragStart(e) {
+    initialX = e.touches[0].clientX - xOffset;
+    initialY = e.touches[0].clientY - yOffset;
+    elmnt = e.target;
+
+    if (e.target === elmnt) {
+      active = true;
+    }
+  }
+
+  function dragEnd(e) {
+    initialX = currentX;
+    initialY = currentY;
+
+    active = false;
+  }
+
+  function drag(e) {
+    if (active && e.target != container) {
+      e.preventDefault();
+
+      currentX = e.touches[0].clientX - initialX;
+      currentY = e.touches[0].clientY - initialY;
+
+      xOffset = currentX;
+      yOffset = currentY;
+
+      elmnt.style.transform =
+        "translate3d(" + currentX + "px, " + currentY + "px, 0)";
+      // setTranslate(currentX, currentY, dragItem);
+    }
+  }
+
+  // function setTranslate(xPos, yPos, el) {
+  //     el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+  // }
+})();
+
 export default class Content extends Component {
   constructor() {
     super();
     this.displayData = [];
     this.state = {
-      count: 0,
-      showData: this.displayData
+      count: 0
     };
     this.appendData = this.appendData.bind(this);
-    this.can.addEventListener("nv-enter", this.handleNvEnter);
+    // this.can.addEventListener("", this.handleNvEnter);
+    // this.nv.addEventListener("nv-enter", this.handleNvEnter);
     // this.dragElement = this.dragElement.bind(this);
     // this.delElement = this.delElement.bind(this);
   }
+
+  componentDidMount() {
+    // this.can.addEventListener("click", e => this.handleNvEnter(e));
+    this.can.addEventListener("onTouchStart", e => this.handleNvEnter(e));
+  }
+  handleNvEnter = event => {
+    console.log("Nv Enter:", event);
+    // event.preventDefault();
+  };
   appendData(e) {
     let src = e.target.src;
+
     // alert(src);
     // "div",
     //       {
@@ -213,15 +275,20 @@ export default class Content extends Component {
         id={"img_drag_" + c}
         onMouseOver={e => this.dragElement("img_drag_" + c, e)}
         onContextMenu={e => this.contextOnElement("img_drag_" + c, e)}
+        // onTouchMove = {e=>this.}
+        // ref={elem => (this.can = elem)}
+        // ref={elem => (this.can = elem)}
         key={"img_drag_" + c}
       >
         <img src={src} height="auto" width="200px" />
       </div>
     );
     this.setState({
-      showdata: this.displayData,
+      // showdata: this.displayData,
       count: c + 1
     });
+    setTimeout(this.event, 3000);
+
     // console.log(this.displayData);
 
     // this.setState({
@@ -229,8 +296,12 @@ export default class Content extends Component {
     //    postVal : ""
     // });
   }
+  event() {
+    // this.can.addEventListener("mouseover", this.handleNvEnter);
+  }
   dragElement(id) {
     var e = document.getElementById(id);
+    // alert("abc");
     // alert(e);
     // alert(e.className);
     var pos1 = 0,
@@ -238,9 +309,11 @@ export default class Content extends Component {
       pos3 = 0,
       pos4 = 0;
     e.onmousedown = dragMouseDown;
-    function dragMouseDown(e) {
+    function dragMouseDown() {
+      // alert("dragmouse Down");
+      // var e = document.getElementById(id);
       e = e || window.event;
-      e.preventDefault();
+      // e.preventDefault();
       // get the mouse cursor position at startup:
       pos3 = e.clientX;
       pos4 = e.clientY;
@@ -249,20 +322,25 @@ export default class Content extends Component {
       document.onmousemove = elementDrag;
     }
     function elementDrag(e) {
-      var e = document.getElementById(id);
+      var es = document.getElementById(id);
+      // alert("Element Drag");
+      // console.log(e);
+      // alert("ClassName " + es.className);
       e = e || window.event;
-      // e.preventDefault();
+      e.preventDefault();
       // calculate the new cursor position:
       pos1 = pos3 - e.clientX;
       pos2 = pos4 - e.clientY;
       pos3 = e.clientX;
       pos4 = e.clientY;
       // set the element's new position:
-      e.style.top = e.offsetTop - pos2 + "px";
-      e.style.left = e.offsetLeft - pos1 + "px";
+      es.style.top = es.offsetTop - pos2 + "px";
+      es.style.left = es.offsetLeft - pos1 + "px";
+      // alert("ptyu");
     }
     function closeDragElement() {
       /* stop moving when mouse button is released:*/
+      // alert("Close Drag Element");
       document.onmouseup = null;
       document.onmousemove = null;
     }
@@ -450,7 +528,7 @@ export default class Content extends Component {
         />
         <div className="designArea">
           <div className="canvasArea">
-            <div className="canvasContainer">
+            <div className="canvasContainer" onDrag={this.handleNvEnter}>
               <div id="canvas" ref={elem => (this.can = elem)}>
                 {this.displayData}
               </div>
