@@ -83,11 +83,11 @@ class Company extends Component {
       comid: id
     };
 
-    // let p = this.state.allCompanies.map(e => {
-    //   if (e.cid === id) e.is_active = 1 - e.is_active;
-    //   return e;
-    // });
-    // this.setState({ allCompanies: p });
+    let p = this.state.allCompanies.map(e => {
+      if (e.cid === id) e.is_active = 1 - e.is_active;
+      return e;
+    });
+    this.setState({ allCompanies: p });
 
     console.log(data);
     fetch("http://localhost:5000/edit/company", {

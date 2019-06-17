@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import Content from "./Content";
 import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 
 export default class Header extends Component {
+  state = {
+    selectedlink: ""
+  };
   render() {
     var style = {
       height: 60
@@ -12,6 +14,7 @@ export default class Header extends Component {
       background: "rgb(255,0,0)",
       marginLeft: 5
     };
+
     return (
       <Router>
         <header className="header">
