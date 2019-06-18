@@ -1,0 +1,124 @@
+::-webkit-scrollbar {
+    width: 5px;
+}
+  
+  /* Track */
+::-webkit-scrollbar-track {
+    background: rgba(30, 49, 61,1);
+}
+   
+  /* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, .3); 
+    border-radius: 10px;
+}
+  
+  /* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, .7); 
+}
+
+
+body{
+    margin: 0;
+    font-family: 'product sans';
+}
+
+.hght-0{
+    height: 0;
+}
+
+.h-100{
+    height: 100%;
+}
+
+.ovf-hid{
+    overflow: hidden;
+}
+
+.mr-top-50{
+    margin-top: 50px;
+}
+
+.op-0{
+    opacity: 0;
+}
+
+.pd-0{
+    padding: 0;
+}
+
+.pd-10{
+    padding: 10px;
+}
+
+.hr-light{
+    background: rgba(196, 222, 238, .8);
+    border: 0;
+    padding: .5px;
+    width: 80%;
+    height: 1px;
+}
+
+.btn{
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 1);
+    border-radius: 100px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 1);
+    padding: 10px 20px;
+    cursor: pointer;
+    outline: none;
+    transition: background .3s, color .3s;
+}
+
+.btn:hover{
+    background: rgba(255, 255, 255, 1);
+    color: rgba(38, 73, 88,1);
+}
+
+.btn *{
+    cursor: pointer;
+}
+
+.btn > input[type="file"]{
+    display: none;
+}
+
+.btn-i{
+    background: transparent;
+    border: 2px solid rgba(30, 49, 61,1);
+    border-radius: 100px;
+    font-weight: bold;
+    color: rgba(30, 49, 61,1);
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background .3s, color .3s;
+}
+
+.btn-i:hover{
+    background: rgba(30, 49, 61,1);
+    color: rgba(255, 255, 255, 1);
+}
+
+.search[type="text"]{
+    width: 80%;
+    border: 0;
+    background: rgba(255, 255, 255, 1);
+    border-radius: 5px;
+    padding: 10px 10px 10px 40px;
+    font-size: 14px;
+}
+
+.search[type="text"]:focus{
+    outline: 0;
+}
+
+i.search{
+    position: relative;
+    transform: translate(0%, -100%);
+    display: flex;
+    width: fit-content;
+    padding: 7px;
+    color: rgba(30, 49, 61,1);
+}

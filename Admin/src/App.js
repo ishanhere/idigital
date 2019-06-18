@@ -24,8 +24,8 @@ class App extends React.Component {
     return (
       <div className="App">
         <Header linkfun={this.setlink} />
-        <Content linktoRender={this.state.link} />
-        <Footer />
+        <Content linktoRender={this.state.link} linkfun={this.setlink} />
+        {/* <Footer /> */}
       </div>
     );
   }

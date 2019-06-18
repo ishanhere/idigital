@@ -96,7 +96,7 @@ app.get("/list/company", (req, res) => {
   let sql = "SELECT * from tblcompany";
   let query = con.query(sql, (err, result) => {
     if (err) throw err;
-    console.log(result);
+    // console.log(result);
     res.send({ express: result });
   });
 });
@@ -131,4 +131,44 @@ app.post("/edit/company", (req, res) => {
 
   //
 });
+
+app.get("/api/listfestivals", (req, res) => {
+  let sql = "SELECT * FROM tblfestival";
+  con.query(sql, (err, result) => {
+    if (err) throw err;
+    // console.log(result);
+    res.send({ express: result });
+  });
+}); // INM 10-06-2019
+
+app.post("/api/addfestivals", (req, res) => {
+  console.log("lodo");
+  console.log(req);
+  let festivals = {
+    fname: req.body.festival,
+    keywords: req.body.keywords
+  };
+  let sql = "INSERT INTO tblfestival SET ?";
+  let query = con.query(sql, festivals, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.body = "success";
+    res.send(JSON.stringify(result));
+  });
+}); // INM 10-06-2019)
+
+app.get("/api/showimagesbyfestival", (req, res) => {
+  // let festivalid = {
+  //   fid: req.body.fid
+  // };
+  let sql = `SELECT * FROM tblfest_images WHERE festid='${
+    req.body.festivalid
+  }'`;
+  let query = con.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(query);
+    res.send({ express: result });
+  });
+}); // INM 10-06-2019
+
 app.listen(port, () => console.log(`Listening on port ${port}`));

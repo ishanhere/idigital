@@ -370,7 +370,7 @@ class Company extends Component {
     };
 
     return (
-      <body>
+      <div>
         <form
           id="register"
           method="post"
@@ -587,7 +587,7 @@ class Company extends Component {
             </thead>
             <tbody>
               {this.state.allCompanies.map(com => (
-                <tr>
+                <tr onClick={() => this.props.linkfun("editor")} key={com.cid}>
                   <td>
                     <b>{i++}</b>
                   </td>
@@ -605,7 +605,7 @@ class Company extends Component {
                   </td>
                   <td>
                     <a>
-                      <label class="switch">
+                      <label className="switch">
                         <input
                           type="checkbox"
                           name="active"
@@ -614,7 +614,7 @@ class Company extends Component {
                           checked={com.is_active == 1 ? "true" : ""}
                           // onChange={console.log("HEllo")}
                         />
-                        <span class="slider round" />
+                        <span className="slider round" />
                       </label>
                     </a>
                   </td>
@@ -623,7 +623,7 @@ class Company extends Component {
             </tbody>
           </table>
         </div>
-      </body>
+      </div>
     );
   }
 }
