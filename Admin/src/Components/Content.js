@@ -14,7 +14,7 @@ export default class Content extends Component {
     //   return <Festivals_Images />;
     // else return <h6>Not Found</h6>;
     return (
-      <body>
+      <div>
         <center>
           <h1>Shree Ganesh !</h1>
           <h1>Jay mahadev Shree Ganesh</h1>
@@ -26,7 +26,7 @@ export default class Content extends Component {
             <h6>Not Found</h6>
           )}
         </center>
-      </body>
+      </div>
     );
   }
 }
