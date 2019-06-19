@@ -234,26 +234,29 @@ export default class Content extends Component {
     super();
     this.displayData = [];
     this.state = {
+      showdata: this.displayData,
       count: 0
     };
     this.appendData = this.appendData.bind(this);
+    this.dragElement = this.dragElement.bind(this);
     // this.can.addEventListener("", this.handleNvEnter);
     // this.nv.addEventListener("nv-enter", this.handleNvEnter);
     // this.dragElement = this.dragElement.bind(this);
     // this.delElement = this.delElement.bind(this);
   }
 
-  componentDidMount() {
-    // this.can.addEventListener("click", e => this.handleNvEnter(e));
-    this.can.addEventListener("onTouchStart", e => this.handleNvEnter(e));
-  }
+  // componentDidMount() {
+  //   // this.can.addEventListener("click", e => this.handleNvEnter(e));
+  //   // this.can.addEventListener("onTouchStart", e => this.handleNvEnter(e));
+  // }
   handleNvEnter = event => {
     console.log("Nv Enter:", event);
     // event.preventDefault();
   };
-  appendData(e) {
-    let src = e.target.src;
-
+  appendData(elmnt) {
+    // console.log(e);
+    let src = elmnt.target.src;
+    // console.log(e);
     // alert(src);
     // "div",
     //       {
@@ -272,22 +275,23 @@ export default class Content extends Component {
     this.displayData.push(
       <div
         className="dragable"
-        id={"img_drag_" + c}
-        onMouseOver={e => this.dragElement("img_drag_" + c, e)}
+        // id={"img_drag_" + c}
+        // onMouseOver={e => this.dragElement("img_drag_" + c, e)}
+        onMouseOver={this.dragElement}
         onContextMenu={e => this.contextOnElement("img_drag_" + c, e)}
         // onTouchMove = {e=>this.}
         // ref={elem => (this.can = elem)}
         // ref={elem => (this.can = elem)}
-        key={"img_drag_" + c}
+        // key={"img_drag_" + c}
       >
         <img src={src} height="auto" width="200px" />
       </div>
     );
     this.setState({
-      // showdata: this.displayData,
+      showdata: this.displayData,
       count: c + 1
     });
-    setTimeout(this.event, 3000);
+    // setTimeout(this.event, 3000);
 
     // console.log(this.displayData);
 
@@ -296,23 +300,29 @@ export default class Content extends Component {
     //    postVal : ""
     // });
   }
-  event() {
-    // this.can.addEventListener("mouseover", this.handleNvEnter);
-  }
-  dragElement(id) {
-    var e = document.getElementById(id);
-    // alert("abc");
-    // alert(e);
-    // alert(e.className);
+  // event() {
+  //   // this.can.addEventListener("mouseover", this.handleNvEnter);
+  // }
+  dragElement = e => {
+    console.log(e.clientX);
+    console.log(e.clientY);
+    console.log(e.target.parentNode);
+    var es = e.target.parentNode;
+    // console.log(e.target.parentNode);
+    // let elmnt = e.target.parentNode;
+    // var e = document.getElementById(id);
+    // // alert("abc");
+    // console.log(elmnt);
+    // // alert(e.className);
     var pos1 = 0,
       pos2 = 0,
       pos3 = 0,
       pos4 = 0;
-    e.onmousedown = dragMouseDown;
-    function dragMouseDown() {
+    es.onmousedown = dragMouseDown;
+    function dragMouseDown(e) {
       // alert("dragmouse Down");
       // var e = document.getElementById(id);
-      e = e || window.event;
+      // e = e || window.event;
       // e.preventDefault();
       // get the mouse cursor position at startup:
       pos3 = e.clientX;
@@ -322,7 +332,7 @@ export default class Content extends Component {
       document.onmousemove = elementDrag;
     }
     function elementDrag(e) {
-      var es = document.getElementById(id);
+      // var es = document.getElementById(id);
       // alert("Element Drag");
       // console.log(e);
       // alert("ClassName " + es.className);
@@ -331,6 +341,7 @@ export default class Content extends Component {
       // calculate the new cursor position:
       pos1 = pos3 - e.clientX;
       pos2 = pos4 - e.clientY;
+      // console.log("clientX " + clientX + " clientY " + clientY);
       pos3 = e.clientX;
       pos4 = e.clientY;
       // set the element's new position:
@@ -344,7 +355,47 @@ export default class Content extends Component {
       document.onmouseup = null;
       document.onmousemove = null;
     }
-  }
+    // var pos1 = 0,
+    //   pos2 = 0,
+    //   pos3 = 0,
+    //   pos4 = 0;
+    // elmnt.onmousedown = dragMouseDown;
+    // function dragMouseDown() {
+    //   // alert("dragmouse Down");
+    //   // var e = document.getElementById(id);
+    //   e = e || window.event;
+    //   // e.preventDefault();
+    //   // get the mouse cursor position at startup:
+    //   pos3 = e.clientX;
+    //   pos4 = e.clientY;
+    //   document.onmouseup = closeDragElement;
+    //   // call a function whenever the cursor moves:
+    //   document.onmousemove = elementDrag;
+    // }
+    // function elementDrag(e) {
+    //   // var es = document.getElementById(id);
+    //   // alert("Element Drag");
+    //   // console.log(e);
+    //   // alert("ClassName " + es.className);
+    //   e = e || window.event;
+    //   e.preventDefault();
+    //   // calculate the new cursor position:
+    //   pos1 = pos3 - e.clientX;
+    //   pos2 = pos4 - e.clientY;
+    //   pos3 = e.clientX;
+    //   pos4 = e.clientY;
+    //   // set the element's new position:
+    //   elmnt.style.top = elmnt.offsetTop - pos2 + "px";
+    //   elmnt.style.left = elmnt.offsetLeft - pos1 + "px";
+    //   // alert("ptyu");
+    // }
+    // function closeDragElement() {
+    //   /* stop moving when mouse button is released:*/
+    //   // alert("Close Drag Element");
+    //   document.onmouseup = null;
+    //   document.onmousemove = null;
+    // }
+  };
 
   readUrl(url) {
     // var fr = new FileReader();
@@ -528,7 +579,7 @@ export default class Content extends Component {
         />
         <div className="designArea">
           <div className="canvasArea">
-            <div className="canvasContainer" onDrag={this.handleNvEnter}>
+            <div className="canvasContainer">
               <div id="canvas" ref={elem => (this.can = elem)}>
                 {this.displayData}
               </div>
