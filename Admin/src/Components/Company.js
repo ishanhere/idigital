@@ -178,11 +178,26 @@ class Company extends Component {
             </thead>
             <tbody>
               {this.state.allCompanies.map(com => (
-                <tr onClick={() => this.props.linkfun("editor")} key={com.cid}>
+                <tr key={com.cid}>
                   <td>
                     <b>{this.state.count}</b>
                   </td>
-                  <td>{com.cname} </td>
+                  <td
+                    onClick={() =>
+                      this.props.linkSet(
+                        com.cid,
+                        com.cname,
+                        com.email,
+                        com.tagline,
+                        com.personname,
+                        com.phone,
+                        com.address,
+                        com.logo
+                      )
+                    }
+                  >
+                    {com.cname}{" "}
+                  </td>
                   <td>{com.email}</td>
                   <td>{com.tagline}</td>
                   <td>{com.personname}</td>
