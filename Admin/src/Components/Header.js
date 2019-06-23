@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 
 export default class Header extends Component {
   state = {
@@ -47,13 +47,15 @@ export default class Header extends Component {
                           </li>
 
                           <li className="">
-                            <a
+                            <Link to="/company" className="nav-link">
+                              {/* <a
                               href="#"
                               name="Companies"
                               onClick={() => this.props.linkfun("Companies")}
-                            >
-                              Companies
-                            </a>
+                            > */}
+                              Company
+                            </Link>
+                            {/* </a> */}
                           </li>
                           <li>
                             <a

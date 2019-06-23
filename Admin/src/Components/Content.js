@@ -17,7 +17,7 @@ export default class Content extends Component {
     return (
       <div>
         <center>
-          {/* <h1>Shree Ganesh !</h1> */}
+          <h1>Shree Ganesh !</h1>
           {this.props.linktoRender == "Companies" ? (
             <Company {...this.props} />
           ) : this.props.linktoRender == "Festivals_Images" ? (
