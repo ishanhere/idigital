@@ -142,7 +142,6 @@ app.get("/api/listfestivals", (req, res) => {
 }); // INM 10-06-2019
 
 app.post("/api/addfestivals", (req, res) => {
-  console.log("lodo");
   console.log(req);
   let festivals = {
     fname: req.body.festival,
@@ -166,9 +165,32 @@ app.get("/api/showimagesbyfestival", (req, res) => {
   }'`;
   let query = con.query(sql, (err, result) => {
     if (err) throw err;
-    console.log(query);
+    // console.log(query);
     res.send({ express: result });
   });
 }); // INM 10-06-2019
+
+app.post("/search/company", (req, res) => {
+  let word = req.body.keyword;
+
+  let sql =
+    "SELECT * from tblcompany where cname like '%" +
+    word +
+    "%' or email like '%" +
+    word +
+    "%' or personname like '%" +
+    word +
+    "%'or phone like '%" +
+    word +
+    "%' or address like '%" +
+    word +
+    "%'";
+  console.log(sql);
+  let query = con.query(sql, (err, result) => {
+    if (err) throw err;
+    // console.log(query);
+    res.send({ express: result });
+  });
+});
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

@@ -2,9 +2,10 @@
 
 import React, { Component } from "react";
 import axios from "axios";
+import SimpleReactValidator from "simple-react-validator";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import { FormErrors } from "./FormErrors";
+// import { FormErrors } from "./FormErrors";
 const path = require("path");
 
 // const formValid = ({ formErrors, ...rest }) => {
@@ -36,6 +37,7 @@ const path = require("path");
 class Company extends Component {
   constructor(props) {
     super(props);
+    this.validator = new SimpleReactValidator();
     this.state = {
       allCompanies: [],
       data: false,
@@ -51,28 +53,28 @@ class Company extends Component {
       logoFileName: null,
       count: 1,
       active: "",
-      show: false,
-      formErrors: {
-        company: "",
-        pname: "",
-        email: "",
-        pwd: "",
-        cpwd: "",
-        address: "",
-        tagline: "",
-        phone: "",
-        logoFile: null,
-        logoFileName: null
-      },
-      formValid: false,
-      emailValid: false,
-      companyValid: false,
-      personValid: false,
-      passwordValid: false,
-      confirmpasswordValid: false,
-      phoneValid: false,
-      addressValid: false,
-      tagLine: false
+      show: false
+      // formErrors: {
+      //   company: "",
+      //   pname: "",
+      //   email: "",
+      //   pwd: "",
+      //   cpwd: "",
+      //   address: "",
+      //   tagline: "",
+      //   phone: "",
+      //   logoFile: null,
+      //   logoFileName: null
+      // },
+      // formValid: false,
+      // emailValid: false,
+      // companyValid: false,
+      // personValid: false,
+      // passwordValid: false,
+      // confirmpasswordValid: false,
+      // phoneValid: false,
+      // addressValid: false,
+      // tagLine: false
     };
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -96,96 +98,95 @@ class Company extends Component {
   }
   logChange = e => {
     // console.log(e.target.files[0]);
-    this.setState({ [e.target.name]: e.target.value }, () => {
-      this.validateField(e.target.name, e.target.value);
-    });
+    this.setState({ [e.target.name]: e.target.value });
   };
+  // this.validateField(e.target.name, e.target.value);
 
-  validateField(fieldname, value) {
-    let fieldValidationErrors = this.state.formErrors;
-    let emailValid = this.state.emailValid;
-    let passwordValid = this.state.passwordValid;
-    let companyValid = this.state.companyValid;
-    let phoneValid = this.state.phoneValid;
-    let taglineValid = this.state.taglineValid;
-    let addressValid = this.state.addressValid;
-    let confirmpasswordValid = this.state.confirmpasswordValid;
-    let personValid = this.state.personValid;
+  // validateField(fieldname, value) {
+  //   let fieldValidationErrors = this.state.formErrors;
+  //   let emailValid = this.state.emailValid;
+  //   let passwordValid = this.state.passwordValid;
+  //   let companyValid = this.state.companyValid;
+  //   let phoneValid = this.state.phoneValid;
+  //   let taglineValid = this.state.taglineValid;
+  //   let addressValid = this.state.addressValid;
+  //   let confirmpasswordValid = this.state.confirmpasswordValid;
+  //   let personValid = this.state.personValid;
 
-    switch (fieldname) {
-      case "email":
-        emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-        fieldValidationErrors.email = emailValid ? "" : " is invalid";
-        break;
+  //   switch (fieldname) {
+  //     case "email":
+  //       emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+  //       fieldValidationErrors.email = emailValid ? "" : " is invalid";
+  //       break;
 
-      case "company":
-        companyValid = value.length >= 6;
-        fieldValidationErrors.company = companyValid ? "" : " is too short";
-        break;
+  //     case "company":
+  //       companyValid = value.length >= 6;
+  //       fieldValidationErrors.company = companyValid ? "" : " is too short";
+  //       break;
 
-      case "pname":
-        personValid = value.length >= 6;
-        fieldValidationErrors.pname = personValid ? "" : " is too short";
-        break;
+  //     case "pname":
+  //       personValid = value.length >= 6;
+  //       fieldValidationErrors.pname = personValid ? "" : " is too short";
+  //       break;
 
-      case "pwd":
-        passwordValid = value.length >= 8;
-        fieldValidationErrors.pwd = passwordValid ? "" : " is too short";
-        break;
+  //     case "pwd":
+  //       passwordValid = value.length >= 8;
+  //       fieldValidationErrors.pwd = passwordValid ? "" : " is too short";
+  //       break;
 
-      case "cpwd":
-        confirmpasswordValid = value.length >= 8;
-        fieldValidationErrors.cpwd = confirmpasswordValid
-          ? ""
-          : " is too short";
-        break;
+  //     case "cpwd":
+  //       confirmpasswordValid = value.length >= 8;
+  //       fieldValidationErrors.cpwd = confirmpasswordValid
+  //         ? ""
+  //         : " is too short";
+  //       break;
 
-      case "address":
-        addressValid = value.length >= 10;
-        fieldValidationErrors.address = addressValid ? "" : " is too short";
-        break;
+  //     case "address":
+  //       addressValid = value.length >= 10;
+  //       fieldValidationErrors.address = addressValid ? "" : " is too short";
+  //       break;
 
-      case "tagline":
-        taglineValid = value.length >= 5;
-        fieldValidationErrors.tagline = taglineValid ? "" : " is too short";
-        break;
+  //     case "tagline":
+  //       taglineValid = value.length >= 5;
+  //       fieldValidationErrors.tagline = taglineValid ? "" : " is too short";
+  //       break;
 
-      case "phone":
-        phoneValid = value.length === 10;
-        fieldValidationErrors.phone = phoneValid ? "" : " is too short";
-        break;
+  //     case "phone":
+  //       phoneValid = value.length === 10;
+  //       fieldValidationErrors.phone = phoneValid ? "" : " is too short";
+  //       break;
 
-      default:
-        break;
-    }
-    this.setState(
-      {
-        formErrors: fieldValidationErrors,
-        emailValid: emailValid,
-        passwordValid: passwordValid,
-        taglineValid: taglineValid,
-        phoneValid: phoneValid,
-        companyValid: companyValid,
-        confirmpasswordValid: confirmpasswordValid,
-        addressValid: addressValid,
-        personValid: personValid
-      },
-      this.validateForm
-    );
-  }
-  validateForm() {
-    this.setState({
-      formValid:
-        this.state.emailValid &&
-        this.state.passwordValid &&
-        this.state.taglineValid &&
-        this.state.phoneValid &&
-        this.state.companyValid &&
-        this.confirmpasswordValid &&
-        this.state.addressValid &&
-        this.state.personValid
-    });
-  }
+  //     default:
+  //       break;
+  //   }
+  //   this.setState(
+  //     {
+  //       formErrors: fieldValidationErrors,
+  //       emailValid: emailValid,
+  //       passwordValid: passwordValid,
+  //       taglineValid: taglineValid,
+  //       phoneValid: phoneValid,
+  //       companyValid: companyValid,
+  //       confirmpasswordValid: confirmpasswordValid,
+  //       addressValid: addressValid,
+  //       personValid: personValid
+  //     },
+  //     this.validateForm
+  //   );
+  // }
+  // validateForm() {
+  //   this.setState({
+  //     formValid:
+  //       this.state.emailValid &&
+  //       this.state.passwordValid &&
+  //       this.state.taglineValid &&
+  //       this.state.phoneValid &&
+  //       this.state.companyValid &&
+  //       this.confirmpasswordValid &&
+  //       this.state.addressValid &&
+  //       this.state.personValid
+  //   });
+  // }
   imgChange = e => {
     this.setState({ logoFile: e.target.files[0] });
     var logoName = path.extname(e.target.files[0].name);
@@ -202,6 +203,39 @@ class Company extends Component {
       .post("http://localhost:5000/upload", fd)
       .then(res => console.log(res))
       .catch(e => console.log(e));
+  };
+
+  handleSearch = e => {
+    console.log(e.target.value);
+    var data = {
+      keyword: e.target.value
+    };
+
+    fetch("http://localhost:5000/search/company", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    })
+      .then(response => response.json())
+      .then(e => this.setState({ allCompanies: e.express, data: true }));
+    // .then(response => {
+    //   if (response.status >= 400) {
+    //     throw new Error("Bad Response from server");
+    //   }
+    //   e => this.setState({ allCompanies: e.express, data: true });
+    //   return response.json();
+    //* })
+    // .then(function(data) {
+    //   console.log(data);
+
+    //   this.printData();
+    // })
+    // .catch(function(err) {
+    //   console.log(err);
+    // });
   };
 
   handleSubmit = e => {
@@ -309,6 +343,13 @@ class Company extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
+  submitform() {
+    if (this.validator.allValid()) {
+      alert("You submitted stuff");
+    } else {
+      alert("Wrong data");
+    }
+  }
   handleActivated(e, id) {
     const comid = id;
     var data = {
@@ -337,7 +378,6 @@ class Company extends Component {
         return response.json();
       })
       .then(() => {
-        console.log("heello");
         fetch("http://localhost:5000/list/company")
           .then(response => response.json())
           .then(e => this.setState({ allCompanies: e.express, data: true }));
@@ -376,14 +416,14 @@ class Company extends Component {
           method="post"
           encType="multipart/form-data"
           action=""
-          onSubmit={this.handleSubmit}
+          onSubmit={this.submitform}
         >
           <Modal show={this.state.show} onHide={this.handleClose}>
             <Modal.Header closeButton>
               <Modal.Title>Company</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <FormErrors formErrors={this.state.formErrors} />
+              {/* <FormErrors formErrors={this.state.formErrors} /> */}
               {/* <!-- Modal Body --> */}
               <div class="modal-body">
                 <p class="statusMsg" />
@@ -400,6 +440,11 @@ class Company extends Component {
                         placeholder="Enter Company"
                         onChange={this.logChange}
                       />
+                      {this.validator.message(
+                        "company",
+                        this.state.company,
+                        "required|alpa"
+                      )}
                     </div>
                   </div>
                   <div class="col-sm-6">
@@ -414,6 +459,11 @@ class Company extends Component {
                         placeholder="Enter Person Name"
                         onChange={this.logChange}
                       />
+                      {this.validator.message(
+                        "company",
+                        this.state.pname,
+                        "required|alpa"
+                      )}
                     </div>
                   </div>
                 </div>
@@ -546,7 +596,6 @@ class Company extends Component {
                 type="submit"
                 variant="primary"
                 onClick={this.handleSubmit}
-                disabled={!this.state.formValid}
               >
                 Save Changes
               </Button>
@@ -555,6 +604,14 @@ class Company extends Component {
         </form>
         <h1 align="center"> COMPANY </h1>
         <center>
+          <input
+            type="text"
+            name="search"
+            placeholder="Enter Keywords Here to Search"
+            className="form-control w-50"
+            onChange={this.handleSearch}
+          />
+          <br />
           <Button variant="danger" onClick={this.handleShow}>
             ADD COMPANY
           </Button>

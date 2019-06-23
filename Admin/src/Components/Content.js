@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Company from "./Company";
 import Festivals_Images from "./Festivals_Images";
-import Editor from "./Editor";
+// import Editor from "./Editor";
 export default class Content extends Component {
   // componentWillUpdate(props, newprops) {
   //   console.log(props, newprops);
@@ -12,7 +12,7 @@ export default class Content extends Component {
   render() {
     if (this.props.linktoRender == "Companies") var val = "Companies";
     else if (this.props.linktoRender == "Festivals / Images") val = "Festivals";
-    else if (this.props.linktoRender == "editor") val = "editor";
+    // else if (this.props.linktoRender == "editor") val = "editor";
 
     return (
       <div>
@@ -22,9 +22,9 @@ export default class Content extends Component {
             <Company {...this.props} />
           ) : this.props.linktoRender == "Festivals_Images" ? (
             <Festivals_Images />
-          ) : this.props.linktoRender == "editor" ? (
-            <Editor {...this.props} />
           ) : (
+            // ) : this.props.linktoRender == "editor" ? (
+            //   <Editor {...this.props} />
             <h6>Not Found</h6>
           )}
         </center>
