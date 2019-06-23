@@ -274,11 +274,11 @@ class Company extends Component {
 
         return response.json();
       })
-      // .then(function(data) {
-      //   console.log(data);
+      .then(function(data) {
+        console.log(data);
 
-      //   this.printData();
-      // })
+        this.printData();
+      })
       .catch(function(err) {
         console.log(err);
       });
