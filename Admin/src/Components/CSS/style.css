@@ -91,10 +91,16 @@
     transform: translate(-50%, -50%);
     box-shadow: 0 0 5px rgba(0, 0, 0, .1);
     padding: 5px;
+    color: rgba(30, 49, 61,1);
+    text-align: center;
     z-index: 2;
 }
 
 .contextEditTxt{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
     height: 200px;
     width: 70%;
     max-width: 600px;
@@ -105,6 +111,8 @@
     transform: translate(-50%, -50%);
     box-shadow: 0 0 5px rgba(0, 0, 0, .1);
     padding: 5px;
+    color: rgba(30, 49, 61,1);
+    text-align: center;
     z-index: 2;
 }
 
@@ -274,6 +282,26 @@
     transition: height .2s, opacity .3s, padding .2s;
 }
 
+.compDetailList{
+    text-align: left;
+    width: 90%;
+}
+
+.compDetailList h3{
+    margin: 5px 0;
+    width: fit-content;
+}
+
+.compDetailList div{
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, .5);
+    padding: 7px;
+}
+
+.compDetailList img{
+    width: 50%;
+}
+
 .subMenuText{
     /* background: rgb(54, 150, 51); */
     display: flex;
@@ -307,6 +335,49 @@
     padding: 5px 20px;
     opacity: 0;
     cursor: pointer;
+}
+
+.subMenuTemplate{
+    /* background: rgb(46, 116, 173); */
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    align-items: center;
+    overflow-y: auto;
+    color: rgba(196, 222, 238, 1);
+    transition: height .2s, opacity .3s, padding .2s;
+}
+
+.tempList {
+    line-height: 0;
+ 
+    -webkit-column-count: 1;
+    -webkit-column-gap:   8px;
+    -moz-column-count:    1;
+    -moz-column-gap:      8px;
+    column-count:         1;
+    column-gap:           8px;  
+}
+  
+.tempList > div {
+    cursor: pointer;
+    margin-bottom: 8px;
+    padding-bottom: 15px;
+    border: 1px solid rgba(255, 255, 255, .5);
+    text-align: center;
+    background: transparent;
+    transition: background-color .3s, color .3s;
+}
+
+.tempList > div:hover{
+    background: rgba(255, 255, 255, .7);
+    color: rgba(38, 73, 88,1);
+}
+
+.tempList img{
+    width: 100% !important;
+    height: auto !important;
+    margin-bottom: 15px;
 }
 
 .subMenuSave{

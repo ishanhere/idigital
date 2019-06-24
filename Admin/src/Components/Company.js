@@ -1,5 +1,38 @@
-import React, { Component } from "react";
+// https://learnetto.com/blog/how-to-do-simple-form-validation-in-reactjs
 
+import React, { Component } from "react";
+import axios from "axios";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import { FormErrors } from "./FormErrors";
+const path = require("path");
+
+// const formValid = ({ formErrors, ...rest }) => {
+//   let valid = true;
+//   Object.values(formErrors).forEach(val => {
+//     val.length > 0 && (valid = false);
+
+//     Object.values(rest).forEach(val => {
+//       val === null && (valid = false);
+//     });
+//     return valid;
+//   });
+// };
+
+// const emailRegex = RegExp(
+//   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+// );
+
+// const formValid = ({ formErrors, ...rest }) => {
+//   let valid = true;
+//   Object.values(formErrors).forEach(val => {
+//     val.length > 0 && (valid = false);
+
+//     Object.values(rest).forEach(val => {
+//       val === null && (valid = false);
+//     });
+//     return valid;
+//   });
 class Company extends Component {
   constructor(props) {
     super(props);
@@ -15,27 +48,167 @@ class Company extends Component {
       tagline: "",
       phone: "",
       logoFile: null,
+      logoFileName: null,
       count: 1,
-      active: ""
+      active: "",
+      show: false,
+      formErrors: {
+        company: "",
+        pname: "",
+        email: "",
+        pwd: "",
+        cpwd: "",
+        address: "",
+        tagline: "",
+        phone: "",
+        logoFile: null,
+        logoFileName: null
+      },
+      formValid: false,
+      emailValid: false,
+      companyValid: false,
+      personValid: false,
+      passwordValid: false,
+      confirmpasswordValid: false,
+      phoneValid: false,
+      addressValid: false,
+      tagLine: false
     };
+    this.handleShow = this.handleShow.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.printData = this.printData.bind(this);
+  }
+
+  handleShow() {
+    this.setState({ show: true });
+  }
+  handleClose() {
+    this.setState({ show: false });
   }
   componentDidMount() {
+    this.printData();
+  }
+
+  printData() {
     fetch("http://localhost:5000/list/company")
       .then(response => response.json())
       .then(e => this.setState({ allCompanies: e.express, data: true }));
   }
-
   logChange = e => {
     // console.log(e.target.files[0]);
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState({ [e.target.name]: e.target.value }, () => {
+      this.validateField(e.target.name, e.target.value);
+    });
   };
 
+  validateField(fieldname, value) {
+    let fieldValidationErrors = this.state.formErrors;
+    let emailValid = this.state.emailValid;
+    let passwordValid = this.state.passwordValid;
+    let companyValid = this.state.companyValid;
+    let phoneValid = this.state.phoneValid;
+    let taglineValid = this.state.taglineValid;
+    let addressValid = this.state.addressValid;
+    let confirmpasswordValid = this.state.confirmpasswordValid;
+    let personValid = this.state.personValid;
+
+    switch (fieldname) {
+      case "email":
+        emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+        fieldValidationErrors.email = emailValid ? "" : " is invalid";
+        break;
+
+      case "company":
+        companyValid = value.length >= 6;
+        fieldValidationErrors.company = companyValid ? "" : " is too short";
+        break;
+
+      case "pname":
+        personValid = value.length >= 6;
+        fieldValidationErrors.pname = personValid ? "" : " is too short";
+        break;
+
+      case "pwd":
+        passwordValid = value.length >= 8;
+        fieldValidationErrors.pwd = passwordValid ? "" : " is too short";
+        break;
+
+      case "cpwd":
+        confirmpasswordValid = value.length >= 8;
+        fieldValidationErrors.cpwd = confirmpasswordValid
+          ? ""
+          : " is too short";
+        break;
+
+      case "address":
+        addressValid = value.length >= 10;
+        fieldValidationErrors.address = addressValid ? "" : " is too short";
+        break;
+
+      case "tagline":
+        taglineValid = value.length >= 5;
+        fieldValidationErrors.tagline = taglineValid ? "" : " is too short";
+        break;
+
+      case "phone":
+        phoneValid = value.length === 10;
+        fieldValidationErrors.phone = phoneValid ? "" : " is too short";
+        break;
+
+      default:
+        break;
+    }
+    this.setState(
+      {
+        formErrors: fieldValidationErrors,
+        emailValid: emailValid,
+        passwordValid: passwordValid,
+        taglineValid: taglineValid,
+        phoneValid: phoneValid,
+        companyValid: companyValid,
+        confirmpasswordValid: confirmpasswordValid,
+        addressValid: addressValid,
+        personValid: personValid
+      },
+      this.validateForm
+    );
+  }
+  validateForm() {
+    this.setState({
+      formValid:
+        this.state.emailValid &&
+        this.state.passwordValid &&
+        this.state.taglineValid &&
+        this.state.phoneValid &&
+        this.state.companyValid &&
+        this.confirmpasswordValid &&
+        this.state.addressValid &&
+        this.state.personValid
+    });
+  }
   imgChange = e => {
-    this.setState({ logoFile: e.target.files[0].name });
+    this.setState({ logoFile: e.target.files[0] });
+    var logoName = path.extname(e.target.files[0].name);
+    var logonamedone = JSON.stringify(Date.now()) + logoName;
+    this.setState({ logoFileName: logonamedone });
     // console.log(e.target.files[0]);
+    console.log(logonamedone);
   };
+
+  uploadImage = () => {
+    const fd = new FormData();
+    fd.append("myfile", this.state.logoFile, this.state.logoFileName);
+    axios
+      .post("http://localhost:5000/upload", fd)
+      .then(res => console.log(res))
+      .catch(e => console.log(e));
+  };
+
   handleSubmit = e => {
     e.preventDefault();
+    this.handleClose();
+    this.uploadImage();
+    // if (formValid(this.state))
     var data = {
       company: this.state.company,
       pname: this.state.pname,
@@ -45,7 +218,7 @@ class Company extends Component {
       address: this.state.address,
       tagline: this.state.tagline,
       phone: this.state.phone,
-      logoFile: this.state.logoFile
+      logoFile: this.state.logoFileName
     };
 
     fetch("http://localhost:5000/add/company", {
@@ -56,17 +229,21 @@ class Company extends Component {
       },
       body: JSON.stringify(data)
     })
-      .then(function(response) {
+      .then(response => {
+        console.log("Hello");
+        fetch("http://localhost:5000/list/company")
+          .then(response => response.json())
+          .then(e => this.setState({ allCompanies: e.express, data: true }));
         if (response.status >= 400) {
           throw new Error("Bad Response from server");
         }
+
         return response.json();
       })
       .then(function(data) {
         console.log(data);
-        if (data == "success") {
-          this.setState({ msg: "Company Added" });
-        }
+
+        this.printData();
       })
       .catch(function(err) {
         console.log(err);
@@ -74,6 +251,61 @@ class Company extends Component {
   };
 
   logChange(e) {
+    // const [name, value] = e.target;
+    // let formErrors = this.state.formErrors;
+    // switch (name) {
+    //   case "company":
+    //     formErrors.company =
+    //       value.length < 20 && value.length > 0
+    //         ? "Minimum 20 character Required"
+    //         : "";
+    //     break;
+
+    //   case "pname":
+    //     formErrors.pname =
+    //       value.length < 20 && value.length > 0
+    //         ? "Minimum 20 character Required"
+    //         : "";
+    //     break;
+
+    //   case "email":
+    //     formErrors.email =
+    //       value.length < 20 && value.length > 0
+    //         ? "Minimum 20 character Required"
+    //         : "";
+    //     break;
+
+    //   case "pwd":
+    //     formErrors.pwd =
+    //       value.length < 6 && value.length > 0
+    //         ? "Minimum 6 character Required"
+    //         : "";
+    //     break;
+
+    //   case "cpwd":
+    //     formErrors.cpwd =
+    //       value.length < 6 && value.length > 0
+    //         ? "Minimum 6 character Required"
+    //         : "";
+    //     break;
+
+    //   case "address":
+    //     formErrors.address =
+    //       value.length < 20 && value.length > 0 ? " 20 character Required" : "";
+    //     break;
+
+    //   case "tagline":
+    //     formErrors.tagline =
+    //       value.length < 20 && value.length > 0 ? "20 character Required" : "";
+    //     break;
+
+    //   case "phone":
+    //     formErrors.phone = value.length == 20 ? "10 Digits Required" : "";
+    //     break;
+
+    //   default:
+    //     break;
+    // }
     this.setState({ [e.target.name]: e.target.value });
   }
 
@@ -128,6 +360,7 @@ class Company extends Component {
   // };
 
   render() {
+    let i = 1;
     const mystyle = {
       marginLeft: "auto",
       marginRight: "auto",
@@ -138,24 +371,199 @@ class Company extends Component {
 
     return (
       <div>
+        <form
+          id="register"
+          method="post"
+          encType="multipart/form-data"
+          action=""
+          onSubmit={this.handleSubmit}
+        >
+          <Modal show={this.state.show} onHide={this.handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Company</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <FormErrors formErrors={this.state.formErrors} />
+              {/* <!-- Modal Body --> */}
+              <div class="modal-body">
+                <p class="statusMsg" />
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>Company</label>
+
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="cname"
+                        name="company"
+                        placeholder="Enter Company"
+                        onChange={this.logChange}
+                      />
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>Contact Person</label>
+
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="pname"
+                        name="pname"
+                        placeholder="Enter Person Name"
+                        onChange={this.logChange}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>Email</label>
+
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    name="email"
+                    placeholder="Enter email"
+                    onChange={this.logChange}
+                  />
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>Password</label>
+
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="pwd"
+                        name="pwd"
+                        placeholder="Enter Password"
+                        onChange={this.logChange}
+                      />
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>Confirm Password</label>
+
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="cpwd"
+                        name="cpwd"
+                        placeholder="Enter Confirm Password"
+                        onChange={this.logChange}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>Address</label>
+
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="add"
+                    name="address"
+                    placeholder="Enter Company Address"
+                    onChange={this.logChange}
+                  />
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>TagLine</label>
+
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="tagline"
+                        name="tagline"
+                        placeholder="Enter Company Tagline"
+                        onChange={this.logChange}
+                      />
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>Phone Number</label>
+
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="phone"
+                        name="phone"
+                        placeholder="Enter Phone"
+                        onChange={this.logChange}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-5">
+                    <div class="form-group">
+                      <label class="control-label">Logo </label>
+                      <div class="btn btn-default btn-file">
+                        <i class="fa fa-folder-open" />
+                        &nbsp;
+                        <span class="hidden-xs">Browse Logo</span>
+                        <input
+                          type="file"
+                          onChange={this.imgChange}
+                          name="myfile"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* <!-- Modal Footer --> */}
+              {/* <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-default"
+                  data-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="submit" class="btn btn-default submitBtn">
+                  SUBMIT
+                </button>
+              </div> */}
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.handleClose}>
+                Close
+              </Button>
+              <Button
+                type="submit"
+                variant="primary"
+                onClick={this.handleSubmit}
+                disabled={!this.state.formValid}
+              >
+                Save Changes
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </form>
         <h1 align="center"> COMPANY </h1>
         <center>
-          <button
-            type="button"
-            className="btn btn-danger"
-            data-toggle="modal"
-            data-target="#modalForm"
-            data-backdrop="static"
-            data-keyboard="false"
-          >
-            {" "}
+          <Button variant="danger" onClick={this.handleShow}>
             ADD COMPANY
-          </button>
+          </Button>
         </center>
         <br />
+
         <div className="panel panel-default p50 uth-panel">
           <table
-            className="table table-hover"
+            className="table w-75 table-hover"
             style={{
               flex: 0.8,
               marginLeft: "auto",
@@ -173,6 +581,7 @@ class Company extends Component {
                 <th>Person</th>
                 <th>Phone number</th>
                 <th>Address</th>
+                <th>Logo</th>
                 <th>Activated</th>
               </tr>
             </thead>
@@ -180,7 +589,7 @@ class Company extends Component {
               {this.state.allCompanies.map(com => (
                 <tr key={com.cid}>
                   <td>
-                    <b>{this.state.count}</b>
+                    <b>{i++}</b>
                   </td>
                   <td
                     onClick={() =>
@@ -204,6 +613,12 @@ class Company extends Component {
                   <td>{com.phone}</td>
                   <td>{com.address}</td>
                   <td>
+                    <img
+                      src={"http://localhost:3000/files/" + com.logo}
+                      style={{ height: 50, width: 50 }}
+                    />
+                  </td>
+                  <td>
                     <a>
                       <label className="switch">
                         <input
@@ -223,190 +638,6 @@ class Company extends Component {
             </tbody>
           </table>
         </div>
-
-        <div className="modal fade" id="modalForm" role="dialog">
-          <div className="modal-dialog modal-lg">
-            <div className="modal-content">
-              {/* <!-- Modal Header --> */}
-              <div className="modal-header">
-                <button type="button" className="close" data-dismiss="modal">
-                  <span aria-hidden="true">&times;</span>
-                  <span className="sr-only">Close</span>
-                </button>
-                <h4 className="modal-title" id="myModalLabel">
-                  Sign Up
-                </h4>
-              </div>
-
-              <form
-                id="register"
-                method="post"
-                encType="multipart/form-data"
-                action=""
-                onSubmit={this.handleSubmit}
-              >
-                {/* <!-- Modal Body --> */}
-
-                <div className="modal-body">
-                  <p className="statusMsg" />
-                  <div className="row">
-                    <div className="col-sm-6">
-                      <div className="form-group">
-                        <label>Company</label>
-
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="cname"
-                          name="company"
-                          placeholder="Enter Company"
-                          onChange={this.logChange}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-sm-6">
-                      <div className="form-group">
-                        <label>Contact Person</label>
-
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="pname"
-                          name="pname"
-                          placeholder="Enter Person Name"
-                          onChange={this.logChange}
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="form-group">
-                    <label>Email</label>
-
-                    <input
-                      type="email"
-                      className="form-control"
-                      id="email"
-                      name="email"
-                      placeholder="Enter email"
-                      onChange={this.logChange}
-                    />
-                  </div>
-
-                  <div className="row">
-                    <div className="col-sm-6">
-                      <div className="form-group">
-                        <label>Password</label>
-
-                        <input
-                          type="password"
-                          className="form-control"
-                          id="pwd"
-                          name="pwd"
-                          placeholder="Enter Password"
-                          onChange={this.logChange}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-sm-6">
-                      <div className="form-group">
-                        <label>Confirm Password</label>
-
-                        <input
-                          type="password"
-                          className="form-control"
-                          id="cpwd"
-                          name="cpwd"
-                          placeholder="Enter Confirm Password"
-                          onChange={this.logChange}
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="form-group">
-                    <label>Address</label>
-
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="add"
-                      name="address"
-                      placeholder="Enter Company Address"
-                      onChange={this.logChange}
-                    />
-                  </div>
-
-                  <div className="row">
-                    <div className="col-sm-6">
-                      <div className="form-group">
-                        <label>TagLine</label>
-
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="tagline"
-                          name="tagline"
-                          placeholder="Enter Company Tagline"
-                          onChange={this.logChange}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-sm-6">
-                      <div className="form-group">
-                        <label>Phone Number</label>
-
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="phone"
-                          name="phone"
-                          placeholder="Enter Phone"
-                          onChange={this.logChange}
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="row">
-                    <div className="col-sm-5">
-                      <div className="form-group">
-                        <label className="control-label">Logo </label>
-                        <div className="btn btn-default btn-file">
-                          <i className="fa fa-folder-open" />
-                          &nbsp;
-                          <span className="hidden-xs">Browse Logo</span>
-                          <input
-                            id="pic"
-                            name="pic"
-                            type="file"
-                            onChange={this.imgChange}
-                            accept="image/*"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* <!-- Modal Footer --> */}
-                <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn btn-default"
-                    data-dismiss="modal"
-                  >
-                    Close
-                  </button>
-                  <button type="submit" className="btn btn-default submitBtn">
-                    SUBMIT
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <br />
       </div>
     );
   }

@@ -9,6 +9,9 @@ import "./CSS/media.css";
 import ReactDOM from "react-dom";
 import download_pic from "./Images/download.png";
 import avk from "./Images/avk.jpg";
+import DisplayImages from "./DisplayImages";
+// import "./JS/html2canvas";
+// import "./JS/mainCanvas";
 
 // $(document).ready(function() {
 //   alert("Loda");
@@ -156,17 +159,88 @@ function ab() {
 })();
 
 export default class Content extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.displayData = [];
     this.state = {
-      showdata: this.displayData
+      showdata: this.displayData,
+      arrimages: []
     };
     this.appendData = this.appendData.bind(this);
     this.dragElement = this.dragElement.bind(this);
     this.contextOnElement = this.contextOnElement.bind(this);
+    this.showimages = this.showimages.bind(this);
+    this.readUrl = this.readUrl.bind(this);
+    this.clsupld = this.clsupld.bind(this);
+    this.appendText = this.appendText.bind(this);
+    this.addTxtToCanvas = this.addTxtToCanvas.bind(this);
+    this.clrChangeTxt = this.clrChangeTxt.bind(this);
   }
-
+  componentDidMount() {
+    this.showimages();
+  }
+  showimages() {
+    var url = "http://localhost:5000/api/showimages";
+    fetch(url)
+      .then(response => response.json())
+      .then(e => {
+        this.setState({ arrimages: e.express });
+      });
+  }
+  clrChangeTxt = elmnt => {
+    // alert();
+    console.log(elmnt.target.value);
+    console.log(elmnt.target.parentNode.style.background);
+    var clr = elmnt.target.value;
+    elmnt.target.parentNode.style.background = clr;
+  };
+  addTxtToCanvas() {
+    // alert(val);
+    // this.addTxtToCanvas(
+    //   //   document.getElementById("addText"),
+    //   //   document.getElementById("txtClr").style.backgroundColor,
+    //   //   document.getElementById("txtSize")
+    var clr = document.getElementById("txtClr").style.backgroundColor;
+    var size = document.getElementById("txtSize").value;
+    var txt = document.getElementById("addText").value;
+    console.log(document.getElementById("addText").value);
+    console.log(document.getElementById("txtSize").value);
+    console.log(document.getElementById("txtClr").style.backgroundColor);
+    const pStyle = {
+      color: clr,
+      fontSize: size + "px"
+    };
+    this.displayData.push(
+      <div
+        className="dragable"
+        onMouseOver={this.dragElement}
+        onContextMenu={this.contextOnElement}
+        // key={"img_drag_" + c}
+      >
+        <p style={pStyle}>{txt}</p>
+      </div>
+    );
+    this.setState({
+      showdata: this.displayData
+    });
+    // var nd = document.createElement("DIV");
+    // var np = document.createElement("P");
+    // nd.className = "dragable";
+    // np.setAttribute(
+    //   "style",
+    //   "color: " + clr + "; font-size: " + size.value + "px;"
+    // );
+    // np.innerHTML = elmnt.value;
+    // elmnt.value = "";
+    // size.value = "";
+    // nd.setAttribute("onmouseover", "dragElement(this)");
+    // nd.setAttribute(
+    //   "oncontextmenu",
+    //   "contextOnElement(this,event); return false"
+    // );
+    // nd.appendChild(np);
+    // document.getElementById("canvas").appendChild(nd);
+  }
   appendData(elmnt) {
     // console.log(e);
     let src = elmnt.target.src;
@@ -185,10 +259,45 @@ export default class Content extends Component {
       showdata: this.displayData
     });
   }
+  appendText(elmnt) {
+    // console.log(elmnt.target.children[0]);
+    console.log(elmnt.target.tagName);
+    console.log(elmnt.target.parentNode.children[1].innerHTML);
+    // if (elmnt.target.tagName != "DIV") {
+    //   elmnt = elmnt.target.parentNode;
+    //   console.log(elmnt);
+    // }
+    if (elmnt.target.tagName === "DIV") {
+      this.displayData.push(
+        <div
+          className="dragable"
+          onMouseOver={this.dragElement}
+          onContextMenu={this.contextOnElement}
+          // key={"img_drag_" + c}
+        >
+          <p>{elmnt.target.children[1].innerHTML}</p>
+        </div>
+      );
+    } else {
+      this.displayData.push(
+        <div
+          className="dragable"
+          onMouseOver={this.dragElement}
+          onContextMenu={this.contextOnElement}
+          // key={"img_drag_" + c}
+        >
+          <p>{elmnt.target.parentNode.children[1].innerHTML}</p>
+        </div>
+      );
+    }
+    this.setState({
+      showdata: this.displayData
+    });
+  }
   dragElement = e => {
-    console.log(e.clientX);
-    console.log(e.clientY);
-    console.log(e.target.parentNode);
+    // console.log(e.clientX);
+    // console.log(e.clientY);
+    // console.log(e.target.parentNode);
     var es = e.target.parentNode;
     var pos1 = 0,
       pos2 = 0,
@@ -233,18 +342,21 @@ export default class Content extends Component {
     }
   };
 
-  readUrl(url) {
-    //   var fr = new FileReader();
-    //   fr.onload = function(e) {
-    //     document.getElementById("showImg").src = e.target.result;
-    //   };
-    //   fr.readAsDataURL(url.files[0]);
-    //   document.getElementById("imgDetail").style.display = "block";
-  }
+  readUrl = e => {
+    console.log(e.target.files[0].name);
+    var fr = new FileReader();
+    fr.onload = function(e) {
+      console.log(e.target.result);
+      document.getElementById("showImg").src = e.target.result;
+    };
+    console.log(e.target);
+    fr.readAsDataURL(e.target.files[0]);
+    document.getElementById("imgDetail").style.display = "block";
+  };
 
   clsupld() {
-    //   document.getElementById("imgDetail").style.display = "none";
-    //   document.getElementById("showImg").src = "";
+    document.getElementById("imgDetail").style.display = "none";
+    // document.getElementById("showImg").src = "";
   }
   contextOnElement = e => {
     console.log(e);
@@ -322,6 +434,9 @@ export default class Content extends Component {
     nd[num].classList.add("h-100", "pd-10");
   };
   render() {
+    const festivalimages = this.state.arrimages.map(item => (
+      <DisplayImages item={item} append={this.appendData} />
+    ));
     return (
       <div className="container">
         <link
@@ -348,6 +463,7 @@ export default class Content extends Component {
               />
               <label className="toolDiv" htmlFor="toolImg">
                 <i className="material-icons">add_photo_alternate</i>
+                {/* <i className="material-icons" /> */}
                 <span>Images</span>
               </label>
               <input
@@ -407,12 +523,12 @@ export default class Content extends Component {
                       name="myfile"
                       accept="image/*"
                       // onClick={this.ab}
-                      onClick={this.readUrl(this)}
+                      onChange={this.readUrl}
                     />
                     Upload Photo
                   </label>
                   <div className="imgDetailCover" id="imgDetail">
-                    <label className="cls" onClick={this.clsupld()}>
+                    <label className="cls" onClick={this.clsupld}>
                       <button type="reset">×</button>
                     </label>
                     <table celspacing="10">
@@ -428,8 +544,7 @@ export default class Content extends Component {
                             <label htmlFor="chkSharable">Sharable</label>
                             <br />
                             <select>
-                              <option>Diwali</option>
-                              <option>Holi</option>
+                              <select>HELLO</select>
                             </select>
                           </td>
                         </tr>
@@ -455,58 +570,69 @@ export default class Content extends Component {
                   />
                   <i className="material-icons search">search</i>
                 </div>
-                <div className="imgList">
-                  <img
-                    src={download_pic}
-                    id="1"
-                    // onClick={e => this.addImgToCanvas(1, e)}
-                    onClick={this.appendData}
-                  />
-                  <img
-                    src={avk}
-                    id="2"
-                    onClick={this.appendData}
-                    // onClick={e => this.addImgToCanvas(2, e)}
-                  />
-                  <img
-                    src={download_pic}
-                    id="3"
-                    onClick={this.appendData}
-                    // onClick={e => this.addImgToCanvas(3, e)}
-                  />
-                  <img
-                    src={avk}
-                    id="4"
-                    onClick={this.appendData}
-                    // onClick={() => this.addImgToCanvas(4)}
-                  />
-                  <img
-                    src={download_pic}
-                    id="5"
-                    onClick={this.appendData}
-                    // onClick={e => this.addImgToCanvas(5, e)}
-                  />
-                  <img
-                    src={avk}
-                    id="6"
-                    onClick={this.appendData}
-                    // onClick={e => this.addImgToCanvas(6, e)}
-                  />
-                  <img
-                    src={download_pic}
-                    id="7"
-                    onClick={this.appendData}
-                    // onClick={e => this.addImgToCanvas(7, e)}
-                  />
-                </div>
+                <div className="imgList">{festivalimages}</div>
               </div>
               <div className="subMenuComp hght-0 ovf-hid op-0">
+                {/* <span>Add Company</span> */}
                 <span>Add Company</span>
+                <div class="compDetailList">
+                  <div class="mr-top-50">
+                    <h3>Logo</h3>
+                    <img
+                      src={"http://localhost:3000/files/" + this.props.logo}
+                      onClick={this.appendData}
+                    />
+                  </div>
+                  <div class="mr-top-20" onClick={this.appendText}>
+                    <h6>Company</h6>
+                    <h4>{this.props.cname}</h4>
+                  </div>
+                  <div class="mr-top-20" onClick={this.appendText}>
+                    <h6>Address</h6>
+                    <h4>{this.props.address}</h4>
+                  </div>
+                  <div class="mr-top-20" onClick={this.appendText}>
+                    <h6>Contact</h6>
+                    <h4>{this.props.phone}</h4>
+                  </div>
+                </div>
               </div>
               <div className="subMenuText hght-0 ovf-hid op-0">
                 <span>Add Text</span>
-                <div className="upldBtnDiv">
-                  <input type="button" className="btn" value="Add Text" />
+                <input
+                  type="text"
+                  id="addText"
+                  class="text mr-top-50"
+                  placeholder="Your text here"
+                />
+                <span class="mr-top-20">Chose color for your text</span>
+                <span id="txtClr" class="clrPickerDiv mr-top-10">
+                  <input
+                    type="color"
+                    id="clr_2"
+                    class="clrPicker"
+                    onChange={this.clrChangeTxt}
+                  />
+                </span>
+                <span class="mr-top-20">Font Size</span>
+                <input
+                  type="number"
+                  id="txtSize"
+                  class="text mr-top-10"
+                  placeholder="Size"
+                />
+                <div class="upldBtnDiv">
+                  <input
+                    type="button"
+                    class="btn"
+                    value="Add Text"
+                    // onClick={this.addTxtToCanvas(
+                    //   document.getElementById("addText"),
+                    //   document.getElementById("txtClr").style.backgroundColor,
+                    //   document.getElementById("txtSize")
+                    // )}
+                    onClick={this.addTxtToCanvas}
+                  />
                 </div>
               </div>
               <div className="subMenuColor hght-0 ovf-hid op-0">

@@ -18,10 +18,18 @@
     background: rgba(255, 255, 255, .7); 
 }
 
+@font-face {
+    font-family: 'product sans';
+    src: url(ProductSans-Regular.ttf);
+}
 
 body{
     margin: 0;
     font-family: 'product sans';
+}
+
+.disp-no{
+    display: none;
 }
 
 .hght-0{
@@ -34,6 +42,14 @@ body{
 
 .ovf-hid{
     overflow: hidden;
+}
+
+.mr-top-10{
+    margin-top: 10px;
+}
+
+.mr-top-20{
+    margin-top: 20px;
 }
 
 .mr-top-50{
@@ -121,4 +137,34 @@ i.search{
     width: fit-content;
     padding: 7px;
     color: rgba(30, 49, 61,1);
+}
+
+.text[type="text"], .text[type="number"]{
+    width: 70%;
+    border: 0;
+    background: rgba(255, 255, 255, 1);
+    border-radius: 5px;
+    padding: 10px 10px 10px 10px;
+    font-size: 14px;
+}
+
+.text[type="number"]{
+    width: 20%;
+}
+
+.text[type="text"]:focus, .text[type="number"]:focus{
+    outline: 0;
+}
+
+.text-i[type="text"], .text-i[type="number"]{
+    width: 70%;
+    border: 1px solid rgba(0, 0, 0, .6);
+    background: rgba(255, 255, 255, 1);
+    border-radius: 5px;
+    padding: 10px 10px 10px 10px;
+    font-size: 14px;
+}
+
+.text-i[type="text"]:focus, .text-i[type="number"]:focus{
+    outline: 0;
 }
