@@ -418,6 +418,7 @@ export default class Content extends Component {
     this.setState({
       showdata: this.displayData
     });
+    // console.log(this.state.showdata);
   }
   appendText(elmnt) {
     // console.log(elmnt.target.children[0]);
@@ -640,10 +641,18 @@ export default class Content extends Component {
     if (elmnt.target.tagName === "DIV") {
       var data = elmnt.target.children[2].value;
       document.getElementById("canvasContainer").innerHTML = data;
+      // document.getElementById("canvas").innerHTML = data;
+      //   document.getElementById("canvas").innerHTML + data;
     } else {
       var data = elmnt.target.parentNode.children[2].value;
       document.getElementById("canvasContainer").innerHTML = data;
+      // document.getElementById("canvas").innerHTML = data;
+      //   document.getElementById("canvas").innerHTML + data;
     }
+    document.getElementById("canvas").innerHTML =
+      this.displayData + document.getElementById("canvas").innerHTML;
+    // document.getElementById("canvas").innerHTML +
+
     var elmnt = document
       .getElementById("canvasContainer")
       .getElementsByClassName("dragable");
@@ -789,7 +798,6 @@ export default class Content extends Component {
                                   onClick={e => this.ddlChange(e, fes.fid)}
                                 >
                                   {fes.fname}
-                                  {fes.fid}
                                 </Dropdown.Item>
                               ))}
                               {/* </Dropdown.Menu> */}
