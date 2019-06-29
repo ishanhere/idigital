@@ -159,6 +159,24 @@ app.post("/api/addfestivals/", (req, res) => {
   });
 }); // INM 10-06-2019)
 
+app.post("/api/addFestImage/", (req, res) => {
+  console.log("at server");
+  // console.log(req);
+  let festivals = {
+    path: req.body.path,
+    festid: req.body.festid,
+    is_sharable: 1
+  };
+  // console.log(req.body.festival, req.body.keywords);
+  let sql = "INSERT INTO tblfest_images SET ?";
+  let query = con.query(sql, festivals, (err, result) => {
+    if (err) throw err;
+    // console.log(result);
+    res.body = "success";
+    res.send(JSON.stringify(result));
+  });
+}); //24-06-2019 KillerGod
+
 app.get("/api/showimagesbyfestival", (req, res) => {
   // console.log("server" + req.query.id);
   let sql = `SELECT * FROM tblfest_images WHERE festid=${req.query.id}`;
@@ -172,7 +190,9 @@ app.get("/api/showimagesbyfestival", (req, res) => {
 
 app.get("/api/showimages", (req, res) => {
   // console.log("server" + req.query.id);
-  let sql = `SELECT * FROM tblfest_images`;
+  let sql = `SELECT fi.* from tblfest_images as fi inner join tblfestival as f on f.fid = fi.festid where f.keywords like "%${
+    req.query.keyword
+  }%"`;
   // console.log(sql);
   con.query(sql, (err, result) => {
     if (err) throw err;
@@ -223,5 +243,91 @@ app.post("/uploadfestivaldisplayimage", function(req, res) {
     res.end("File is uploaded successfully!");
   });
 }); // INM 17-06-2019
+
+var storage1 = multer.diskStorage({
+  destination: function(req, file, callback) {
+    callback(null, "./Admin/public/template_pic/");
+  },
+  filename: function(req, file, callback) {
+    callback(null, file.originalname);
+  }
+}); // 25-06-2019 KILLERGOD
+var upload1 = multer({ storage: storage1 }).single("myfile"); // 25-06-2019 KILLERGOD
+
+app.post("/uploadTemplate", function(req, res) {
+  // console.log(req);
+  upload1(req, res, function(err) {
+    if (err) {
+      console.log(err);
+      return res.end("Error uploading file.");
+    }
+    res.end("File is uploaded successfully!");
+  });
+}); // 25-06-2019 KILLERGOD
+
+app.post("/api/addTemplate/", (req, res) => {
+  console.log("at server");
+  // console.log(req);
+  let festivals = {
+    code: req.body.code,
+    src: req.body.src
+  };
+  // console.log(req.body.festival, req.body.keywords);
+  let sql = "INSERT INTO tbltemplate SET ?";
+  let query = con.query(sql, festivals, (err, result) => {
+    if (err) throw err;
+    // console.log(result);
+    res.body = "success";
+    res.send(JSON.stringify(result));
+  });
+}); //25-06-2019 KillerGod
+
+app.get("/api/showtemplate", (req, res) => {
+  // console.log("server" + req.query.id);
+  let sql = `SELECT * FROM tbltemplate`;
+  // console.log(sql);
+  con.query(sql, (err, result) => {
+    if (err) throw err;
+    // console.log(result);
+    res.send({ express: result });
+  });
+}); //22-06-2019 KILLERGOD
+
+var storage2 = multer.diskStorage({
+  destination: function(req, file, callback) {
+    callback(null, "./Admin/public/final_pic/");
+  },
+  filename: function(req, file, callback) {
+    callback(null, file.originalname);
+  }
+}); // 29-06-2019 KILLERGOD
+var upload2 = multer({ storage: storage2 }).single("myfile"); // 29-06-2019 KILLERGOD
+
+app.post("/uploadFinalImage", function(req, res) {
+  // console.log(req);
+  upload2(req, res, function(err) {
+    if (err) {
+      console.log(err);
+      return res.end("Error uploading file.");
+    }
+    res.end("File is uploaded successfully!");
+  });
+}); // 29-06-2019 KILLERGOD
+
+app.post("/api/addFinalImage/", (req, res) => {
+  console.log("at server");
+  console.log(req.body.path);
+  let festivals = {
+    path: req.body.path
+  };
+  // console.log(req.body.festival, req.body.keywords);
+  let sql = "INSERT INTO tblfinal_image SET ?";
+  let query = con.query(sql, festivals, (err, result) => {
+    if (err) throw err;
+    // console.log(result);
+    res.body = "success";
+    res.send(JSON.stringify(result));
+  });
+}); //29-06-2019 KillerGod
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

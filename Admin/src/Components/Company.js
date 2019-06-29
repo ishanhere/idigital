@@ -569,7 +569,8 @@ class Company extends Component {
               marginLeft: "auto",
               marginRight: "auto",
               marginTop: 0,
-              marginBottom: 0
+              marginBottom: 0,
+              width: "100%"
             }}
           >
             <thead>

@@ -14,8 +14,8 @@ class Festivals_Images extends Component {
       keywords: "",
       render: false,
       show: false,
-      logoFile: null,
-      logoFileName: null
+      logoFile1: null,
+      logoFileName1: null
     };
     this.handleClose = this.handleClose.bind(this);
     this.logChange = this.logChange.bind(this);
@@ -33,14 +33,16 @@ class Festivals_Images extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
   selectImages = e => {
-    this.setState({ logoFile: e.target.files[0] });
-    var logoName = path.extname(e.target.files[0].name);
-    var logonamedone = JSON.stringify(Date.now()) + logoName;
-    this.setState({ logoFileName: logonamedone });
+    this.setState({ logoFile1: e.target.files[0] });
+    var logonamedone =
+      JSON.stringify(Date.now()) + "_" + e.target.files[0].name;
+    this.setState({ logoFileName1: logonamedone });
+    // alert(this.state.logoFile);
+    // alert(this.state.logoFileName);
   };
   uploadImage = () => {
     const fd = new FormData();
-    fd.append("myfile", this.state.logoFile, this.state.logoFileName);
+    fd.append("myfile", this.state.logoFile1, this.state.logoFileName1);
     axios
       .post("http://localhost:5000/uploadfestivaldisplayimage", fd)
       .then(res => console.log(res))
@@ -53,7 +55,7 @@ class Festivals_Images extends Component {
     var data = {
       festival: this.state.festival,
       keywords: this.state.keywords,
-      logoFile: this.state.logoFileName
+      logoFile: this.state.logoFileName1
     };
     console.log(data);
     fetch("http://localhost:5000/api/addfestivals", {

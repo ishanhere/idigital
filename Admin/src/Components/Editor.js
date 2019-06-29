@@ -1,41 +1,19 @@
 import React, { Component } from "react";
-// var ReactDOM = require("react-dom");
+
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
 import $ from "jquery";
-// import "./user";
 import "./CSS/basic.css";
 import "./CSS/style.css";
 import "./CSS/media.css";
-// import "./JS/mainCanvas";
 import ReactDOM from "react-dom";
-import download_pic from "./Images/download.png";
-import avk from "./Images/avk.jpg";
 import DisplayImages from "./DisplayImages";
-// import "./JS/html2canvas";
-// import "./JS/mainCanvas";
-
-// $(document).ready(function() {
-//   alert("Loda");
-//   $("div[name='xyz']")
-//     .has("img")
-//     .mouseover(function() {
-//       alert("Lassan");
-//     });
-// });
-// function capture() {
-//   html2canvas(document.querySelector("#canvas"), {
-//     scale: 2,
-//     //     logging: true,
-//     //     letterRendering: 1,
-//     //     profile: true,
-//     allowTaint: false,
-//     useCORS: true
-//   }).then(canvas => {
-//     var img = canvas.toDataURL("image/jpg");
-//     document.getElementsByClassName("preview")[0].innerHTML =
-//       "<img src='" + img + "'>";
-//     //document.getElementById("prv").src = img;
-//   });
-// }
+import DisplayTemplate from "./DisplayTemplate";
+import axios from "axios";
+import html2canvas from "html2canvas";
+var temp_name = "";
+var final_img = "";
+// const path = require("path");
 
 function editElement(elmnt, conMenu) {
   var layer = document.getElementById("layer");
@@ -157,6 +135,83 @@ function ab() {
   //     el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
   // }
 })();
+// function base64MimeType(encoded) {
+//   var result = null;
+
+//   if (typeof encoded !== "string") {
+//     return result;
+//   }
+
+//   var mime = encoded.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/);
+
+//   if (mime && mime.length) {
+//     result = mime[1];
+//   }
+
+//   return result;
+// }
+function handleSubmitTemplate() {
+  // e.preventDefault();
+  temp_name =
+    document.getElementById("frm-tmp-name").value +
+    "_" +
+    JSON.stringify(Date.now()) +
+    ".png";
+  var data = {
+    code: document.getElementById("canvasContainer").innerHTML,
+    src: temp_name
+  };
+  console.log(data);
+  fetch("http://localhost:5000/api/addTemplate", {
+    method: "POST",
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+    .then(response => {
+      if (response.status >= 400) {
+        throw new Error("Bad Response from server");
+      }
+
+      return response.json();
+    })
+    .then(() => {
+      // this.showimages();
+      // this.printData();
+    })
+    .catch(function(err) {
+      console.log(err);
+    });
+}
+function saveTemplate() {
+  html2canvas(document.querySelector("#canvas"), {
+    scale: 0.6,
+    //     logging: true,
+    //     letterRendering: 1,
+    //     profile: true,
+    allowTaint: false,
+    useCORS: true
+  }).then(canvas => {
+    var img = canvas.toDataURL("image/jpg");
+    // console.log(img);
+    // var tmplt = document.getElementById("canvasContainer").innerHTML;
+    // console.log(tmplt);
+    // console.log(frm.value);
+    // console.log(canvas);
+
+    canvas.toBlob(function(blob) {
+      console.log(blob);
+      const fd = new FormData();
+      fd.append("myfile", blob, temp_name);
+      axios
+        .post("http://localhost:5000/uploadTemplate", fd)
+        .then(res => console.log(res))
+        .catch(e => console.log(e));
+    }, "image/jpg");
+  });
+}
 
 export default class Content extends Component {
   constructor(props) {
@@ -164,23 +219,145 @@ export default class Content extends Component {
     this.displayData = [];
     this.state = {
       showdata: this.displayData,
-      arrimages: []
+      arrimages: [],
+      festivals: [],
+      img: null,
+      img_name: null,
+      dropdown_key: 0,
+      dropdown_name: "Select Festival",
+      templates: []
     };
     this.appendData = this.appendData.bind(this);
     this.dragElement = this.dragElement.bind(this);
     this.contextOnElement = this.contextOnElement.bind(this);
     this.showimages = this.showimages.bind(this);
+    this.showtemplate = this.showtemplate.bind(this);
     this.readUrl = this.readUrl.bind(this);
     this.clsupld = this.clsupld.bind(this);
     this.appendText = this.appendText.bind(this);
     this.addTxtToCanvas = this.addTxtToCanvas.bind(this);
     this.clrChangeTxt = this.clrChangeTxt.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.capture = this.capture.bind(this);
+    this.saveTemplateMenu = this.saveTemplateMenu.bind(this);
+    this.loadTemplate = this.loadTemplate.bind(this);
+    // this.handleSubmitTemplate = this.handleSubmitTemplate.bind(this);
+    // this.saveTemplate = this.saveTemplate.bind(this);
+    // this.templateState = this.templateState.bind(this);
+    // this.ddlChange = this.ddlChange.bind(this);
+  }
+  saveTemplateMenu = e => {
+    var layer = document.getElementById("layer");
+    layer.style.background = "rgba(0, 0, 0, .6)";
+    var nd = document.createElement("DIV");
+    nd.className = "contextEditTxt";
+    nd.innerHTML = "<h3>Save Template</h3>";
+    var frm = document.createElement("INPUT");
+    frm.type = "text";
+    frm.className = "text-i";
+    frm.id = "frm-tmp-name";
+    // frm.onkeyup = function() {
+    //   this.setState({
+    //     temp_name: JSON.stringify(Date.now()) + "_" + frm.value + ".png"
+    //   });
+    // };
+    nd.appendChild(frm);
+    var btn = document.createElement("BUTTON");
+    btn.className = "btn-d";
+    btn.innerHTML = "Done";
+    btn.onclick = function() {
+      // this.templateState(frm);
+      handleSubmitTemplate();
+      saveTemplate();
+      cancelElement(nd);
+    };
+    nd.appendChild(btn);
+    document.getElementsByClassName("canvasArea")[0].appendChild(nd);
+    layer.style.display = "block";
+    layer.onclick = function() {
+      cancelElement(nd);
+    };
+  };
+  capture() {
+    html2canvas(document.querySelector("#canvasContainer"), {
+      scale: 2,
+      //     logging: true,
+      //     letterRendering: 1,
+      //     profile: true,
+      allowTaint: false,
+      useCORS: true
+    }).then(canvas => {
+      var img = canvas.toDataURL("image/jpg"); //.replace("image/png", "image/octet-stream");
+      //alert(img);
+      //Canvas2Image.saveAsJPEG(canvas);
+      //window.open(img);
+      document.getElementsByClassName("preview")[0].innerHTML =
+        "<a id='autoDownloadLink' class='disp-no' href='" +
+        img +
+        "' download>Download</a>";
+      document.getElementById("autoDownloadLink").click();
+      final_img = JSON.stringify(Date.now()) + "_admin.jpg";
+      canvas.toBlob(function(blob) {
+        console.log(blob);
+        const fd = new FormData();
+        fd.append("myfile", blob, final_img);
+        axios
+          .post("http://localhost:5000/uploadFinalImage", fd)
+          .then(res => console.log(res))
+          .catch(e => console.log(e));
+      }, "image/jpg");
+      //document.getElementById("prv").src = img;
+    });
+    var data = {
+      path: final_img
+    };
+    console.log(data);
+    fetch("http://localhost:5000/api/addFinalImage", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    })
+      .then(response => {
+        if (response.status >= 400) {
+          throw new Error("Bad Response from server");
+        }
+
+        return response.json();
+      })
+      .then(() => {
+        // this.showimages();
+        // this.printData();
+      })
+      .catch(function(err) {
+        console.log(err);
+      });
+  }
+  ddlChange(event, id) {
+    this.setState({
+      dropdown_name: event.target.innerHTML,
+      dropdown_key: id
+    });
   }
   componentDidMount() {
     this.showimages();
+    fetch("http://localhost:5000/api/listfestivals")
+      .then(response => response.json())
+      .then(e => this.setState({ festivals: e.express }));
+  }
+  showtemplate() {
+    var url = "http://localhost:5000/api/showtemplate";
+    fetch(url)
+      .then(response => response.json())
+      .then(e => {
+        this.setState({ templates: e.express });
+      });
   }
   showimages() {
-    var url = "http://localhost:5000/api/showimages";
+    var key = document.getElementById("search").value;
+    var url = "http://localhost:5000/api/showimages?keyword=" + key;
     fetch(url)
       .then(response => response.json())
       .then(e => {
@@ -223,23 +400,6 @@ export default class Content extends Component {
     this.setState({
       showdata: this.displayData
     });
-    // var nd = document.createElement("DIV");
-    // var np = document.createElement("P");
-    // nd.className = "dragable";
-    // np.setAttribute(
-    //   "style",
-    //   "color: " + clr + "; font-size: " + size.value + "px;"
-    // );
-    // np.innerHTML = elmnt.value;
-    // elmnt.value = "";
-    // size.value = "";
-    // nd.setAttribute("onmouseover", "dragElement(this)");
-    // nd.setAttribute(
-    //   "oncontextmenu",
-    //   "contextOnElement(this,event); return false"
-    // );
-    // nd.appendChild(np);
-    // document.getElementById("canvas").appendChild(nd);
   }
   appendData(elmnt) {
     // console.log(e);
@@ -344,6 +504,9 @@ export default class Content extends Component {
 
   readUrl = e => {
     console.log(e.target.files[0].name);
+    this.setState({ img: e.target.files[0] });
+    var logonamedone = JSON.stringify(Date.now()) + e.target.files[0].name;
+    this.setState({ img_name: logonamedone });
     var fr = new FileReader();
     fr.onload = function(e) {
       console.log(e.target.result);
@@ -353,7 +516,46 @@ export default class Content extends Component {
     fr.readAsDataURL(e.target.files[0]);
     document.getElementById("imgDetail").style.display = "block";
   };
+  uploadImage = () => {
+    const fd = new FormData();
+    fd.append("myfile", this.state.img, this.state.img_name);
+    axios
+      .post("http://localhost:5000/uploadfestivaldisplayimage", fd)
+      .then(res => console.log(res))
+      .catch(e => console.log(e));
+  };
+  handleSubmit = e => {
+    e.preventDefault();
+    this.clsupld();
+    this.uploadImage();
+    var data = {
+      path: this.state.img_name,
+      festid: this.state.dropdown_key
+    };
+    console.log(data);
+    fetch("http://localhost:5000/api/addFestImage", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    })
+      .then(response => {
+        if (response.status >= 400) {
+          throw new Error("Bad Response from server");
+        }
 
+        return response.json();
+      })
+      .then(() => {
+        this.showimages();
+        // this.printData();
+      })
+      .catch(function(err) {
+        console.log(err);
+      });
+  };
   clsupld() {
     document.getElementById("imgDetail").style.display = "none";
     // document.getElementById("showImg").src = "";
@@ -368,9 +570,9 @@ export default class Content extends Component {
     var layer = document.getElementById("layer");
     // alert(layer);
     // alert(e);
-    var x = e.clientX - 200;
+    var x = e.clientX;
     // alert("Client x " + x);
-    var y = e.clientY + window.scrollY - 200;
+    var y = e.clientY + window.scrollY - 100;
     // alert("Client y " + y);
     var nd = document.createElement("DIV");
     // alert(nd);
@@ -433,19 +635,39 @@ export default class Content extends Component {
     nd[num].classList.remove("hght-0", "ovf-hid", "op-0");
     nd[num].classList.add("h-100", "pd-10");
   };
+  loadTemplate = elmnt => {
+    console.log(elmnt.target);
+    if (elmnt.target.tagName === "DIV") {
+      var data = elmnt.target.children[2].value;
+      document.getElementById("canvasContainer").innerHTML = data;
+    } else {
+      var data = elmnt.target.parentNode.children[2].value;
+      document.getElementById("canvasContainer").innerHTML = data;
+    }
+    var elmnt = document
+      .getElementById("canvasContainer")
+      .getElementsByClassName("dragable");
+    for (var i = 0; i < elmnt.length; i++) {
+      // Distribute(slides.item(i));
+      elmnt[i].addEventListener("mouseover", this.dragElement);
+      elmnt[i].addEventListener("contextmenu", this.contextOnElement);
+    }
+  };
   render() {
     const festivalimages = this.state.arrimages.map(item => (
       <DisplayImages item={item} append={this.appendData} />
     ));
+    const templates = this.state.templates.map(item => (
+      <DisplayTemplate item={item} loadtmp={this.loadTemplate} />
+    ));
+    const mainD = {
+      position: "static"
+    };
     return (
-      <div className="container">
-        <link
-          href="https://fonts.googleapis.com/icon?family=Material+Icons"
-          rel="stylesheet"
-        />
+      <div style={mainD}>
         <div className="designArea">
           <div className="canvasArea">
-            <div className="canvasContainer">
+            <div className="canvasContainer" id="canvasContainer">
               <div id="canvas" ref={elem => (this.can = elem)}>
                 {this.displayData}
               </div>
@@ -499,8 +721,19 @@ export default class Content extends Component {
               <input
                 type="radio"
                 name="toolRadio"
+                id="toolTemp"
+                onChange={e => this.showSubMenu(4, e)}
+                onClick={this.showtemplate}
+              />
+              <label class="toolDiv" for="toolTemp">
+                <i class="material-icons">dashboard</i>
+                <span>Template</span>
+              </label>
+              <input
+                type="radio"
+                name="toolRadio"
                 id="toolSave"
-                onClick={e => this.showSubMenu(4, e)}
+                onChange={e => this.showSubMenu(5, e)}
               />
               <label className="toolDiv" htmlFor="toolSave">
                 <i className="material-icons">save</i>
@@ -516,7 +749,7 @@ export default class Content extends Component {
                   encType="multipart/form-data"
                   action="#"
                 >
-                  <label className="btn">
+                  <label className="btn-l">
                     <input
                       type="file"
                       id="myfile"
@@ -538,22 +771,41 @@ export default class Content extends Component {
                             <img src="#" id="showImg" />
                           </td>
                           <td>
-                            <input type="text" placeholder="Title of text" />
                             <br />
-                            <input type="checkbox" id="chkSharable" />
-                            <label htmlFor="chkSharable">Sharable</label>
-                            <br />
-                            <select>
-                              <select>HELLO</select>
-                            </select>
                           </td>
                         </tr>
                         <tr>
                           <td>
+                            <DropdownButton
+                              drop="up"
+                              title={this.state.dropdown_name}
+                              variant="danger"
+                              id="dropdown-button-drop-left"
+                              key="left"
+                            >
+                              {/* <Dropdown.Menu> */}
+                              {this.state.festivals.map(fes => (
+                                <Dropdown.Item
+                                  onClick={e => this.ddlChange(e, fes.fid)}
+                                >
+                                  {fes.fname}
+                                  {fes.fid}
+                                </Dropdown.Item>
+                              ))}
+                              {/* </Dropdown.Menu> */}
+                            </DropdownButton>
+                          </td>
+                          {/* <td>
+                            <select>
+                              <option>--- Select ---</option>
+                            </select>
+                          </td>  */}
+                          <td>
                             <input
                               type="submit"
-                              className="btn-i"
+                              className="btn-d"
                               value="Upload"
+                              onClick={this.handleSubmit}
                             />
                           </td>
                         </tr>
@@ -566,7 +818,9 @@ export default class Content extends Component {
                   <input
                     type="text"
                     className="search"
+                    id="search"
                     placeholder="Search..."
+                    onKeyUp={this.showimages}
                   />
                   <i className="material-icons search">search</i>
                 </div>
@@ -575,23 +829,23 @@ export default class Content extends Component {
               <div className="subMenuComp hght-0 ovf-hid op-0">
                 {/* <span>Add Company</span> */}
                 <span>Add Company</span>
-                <div class="compDetailList">
-                  <div class="mr-top-50">
+                <div className="compDetailList">
+                  <div className="mr-top-50">
                     <h3>Logo</h3>
                     <img
                       src={"http://localhost:3000/files/" + this.props.logo}
                       onClick={this.appendData}
                     />
                   </div>
-                  <div class="mr-top-20" onClick={this.appendText}>
+                  <div className="mr-top-20" onClick={this.appendText}>
                     <h6>Company</h6>
                     <h4>{this.props.cname}</h4>
                   </div>
-                  <div class="mr-top-20" onClick={this.appendText}>
+                  <div className="mr-top-20" onClick={this.appendText}>
                     <h6>Address</h6>
                     <h4>{this.props.address}</h4>
                   </div>
-                  <div class="mr-top-20" onClick={this.appendText}>
+                  <div className="mr-top-20" onClick={this.appendText}>
                     <h6>Contact</h6>
                     <h4>{this.props.phone}</h4>
                   </div>
@@ -602,35 +856,30 @@ export default class Content extends Component {
                 <input
                   type="text"
                   id="addText"
-                  class="text mr-top-50"
+                  className="text mr-top-50"
                   placeholder="Your text here"
                 />
-                <span class="mr-top-20">Chose color for your text</span>
-                <span id="txtClr" class="clrPickerDiv mr-top-10">
+                <span className="mr-top-20">Chose color for your text</span>
+                <span id="txtClr" className="clrPickerDiv mr-top-10">
                   <input
                     type="color"
                     id="clr_2"
-                    class="clrPicker"
+                    className="clrPicker"
                     onChange={this.clrChangeTxt}
                   />
                 </span>
-                <span class="mr-top-20">Font Size</span>
+                <span className="mr-top-20">Font Size</span>
                 <input
                   type="number"
                   id="txtSize"
-                  class="text mr-top-10"
+                  className="text mr-top-10"
                   placeholder="Size"
                 />
-                <div class="upldBtnDiv">
+                <div className="upldBtnDiv">
                   <input
                     type="button"
-                    class="btn"
+                    className="btn-l"
                     value="Add Text"
-                    // onClick={this.addTxtToCanvas(
-                    //   document.getElementById("addText"),
-                    //   document.getElementById("txtClr").style.backgroundColor,
-                    //   document.getElementById("txtSize")
-                    // )}
                     onClick={this.addTxtToCanvas}
                   />
                 </div>
@@ -642,21 +891,37 @@ export default class Content extends Component {
                 <span className="clrPickerDiv">
                   <input
                     type="color"
-                    // value="#ffffff"
                     id="clr_1"
                     className="clrPicker"
                     onChange={e => this.clrChange(this.id, "clr_1", e)}
                   />
                 </span>
               </div>
+              <div class="subMenuTemplate hght-0 ovf-hid op-0">
+                <span>Load Template</span>
+                <div class="tempList mr-top-50" />
+                {templates}
+              </div>
               <div className="subMenuSave hght-0 ovf-hid op-0">
                 <span>Save Template</span>
+                <input
+                  type="button"
+                  className="btn-l mr-top-50"
+                  value="Save as Image"
+                  onClick={this.capture}
+                />
+                <input
+                  type="button"
+                  className="btn-l mr-top-20"
+                  value="Save Template"
+                  onClick={this.saveTemplateMenu}
+                />
               </div>
             </div>
           </div>
         </div>
-
-        <script src="JS/mainCanvas.js" />
+        <div class="preview" />
+        {/* <script src="JS/mainCanvas.js" /> */}
       </div>
     );
   }

@@ -1,261 +1,263 @@
-
-.header{
-    position: relative;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 70px;
-    background: rgb(255,255,255,1);
+.header {
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  background: rgb(255, 255, 255, 1);
 }
 
-.designArea{
-    display: flex;
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-    top: 70px;
-    /* height: 100vh; */
-    min-height: 500px;
+.designArea {
+  display: flex;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  top: 10px;
+  /* height: 100vh; */
+  min-height: 600px;
+  height: 100%;
 }
 
-.canvasArea{
-    display: flex;
-    flex: 1 1 75%;
-    background: rgba(115, 167, 180, 0.3);
-    justify-content: center;
-    align-items: center;
-    height: 100%;
+.canvasArea {
+  display: flex;
+  flex: 1 1 100%;
+  background: rgba(115, 167, 180, 0.3);
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 .canvasContainer {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    min-height: 200px;
-    min-width: 200px;
-    margin: 50px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  min-height: 200px;
+  min-width: 200px;
+  margin: 50px;
 }
 
 #canvas {
-    height: 400px;
-    width: 400px;
-    background: white;
-    position: relative;
-    overflow: hidden;
-    clip-path: polygon(0 0, 400px 0, 400px 400px, 0 400px);
+  height: 400px;
+  width: 400px;
+  background: white;
+  position: relative;
+  overflow: hidden;
+  clip-path: polygon(0 0, 400px 0, 400px 400px, 0 400px);
 }
 
 .dragable {
-    position: absolute;
-    cursor: grab;
+  position: absolute;
+  cursor: grab;
 }
 
-#layer{
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 2;
-    display: none;
+#layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: none;
 }
 
-.contextDiv{
-    background: white;
-    position: absolute; 
-    border-radius: 5px;
-    padding: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, .1); 
-    z-index: 2;
+.contextDiv {
+  background: white;
+  position: absolute;
+  border-radius: 5px;
+  padding: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 2;
 }
 
-.contextIcon{
-    padding: 10px;
-    border-radius: 5px;
-    background: rgba(60, 60, 60, 0);
-    cursor: pointer;
-    color: rgba(60, 60, 60, 1);
-    transition: background .5s;
+.contextIcon {
+  padding: 10px;
+  border-radius: 5px;
+  background: rgba(60, 60, 60, 0);
+  cursor: pointer;
+  color: rgba(60, 60, 60, 1);
+  transition: background 0.5s;
 }
 
-.contextIcon:hover{
-    background: rgba(60, 60, 60, .2);
+.contextIcon:hover {
+  background: rgba(60, 60, 60, 0.2);
 }
 
-.contextEditImg{
-    height: 400px;
-    width: 70%;
-    max-width: 600px;
-    background: white;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 0 5px rgba(0, 0, 0, .1);
-    padding: 5px;
-    color: rgba(30, 49, 61,1);
-    text-align: center;
-    z-index: 2;
+.contextEditImg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 200px;
+  width: 70%;
+  max-width: 600px;
+  background: white;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  padding: 5px;
+  color: rgba(30, 49, 61, 1);
+  text-align: center;
+  z-index: 2;
 }
 
-.contextEditTxt{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    height: 200px;
-    width: 70%;
-    max-width: 600px;
-    background: white;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 0 5px rgba(0, 0, 0, .1);
-    padding: 5px;
-    color: rgba(30, 49, 61,1);
-    text-align: center;
-    z-index: 2;
+.contextEditTxt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 200px;
+  width: 70%;
+  max-width: 600px;
+  background: white;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  padding: 5px;
+  color: rgba(30, 49, 61, 1);
+  text-align: center;
+  z-index: 2;
 }
 
-.toolBoxArea{
-    display: flex;
-    flex: 1 1 400px;
-    background: rgba(60, 60, 60, .1);
-    flex-direction: row-reverse;
-    min-width: 350px;
-    /* width: 350px; */
-    height: 100%;
+.toolBoxArea {
+  display: flex;
+  flex: 1 1 400px;
+  background: rgba(60, 60, 60, 0.1);
+  flex-direction: row-reverse;
+  min-width: 350px;
+  /* width: 350px; */
+  height: 100%;
 }
 
-.toolBar{
-    display: flex;
-    flex-direction: column;
-    width: 80px;
-    flex: 0 0 70px;
-    color: rgba(196, 222, 238, .8);
-    background: rgba(30, 49, 61,1);
+.toolBar {
+  display: flex;
+  flex-direction: column;
+  width: 80px;
+  flex: 0 0 70px;
+  color: rgba(196, 222, 238, 0.8);
+  background: rgba(30, 49, 61, 1);
 }
 
-.toolBar > input[type="radio"]{
-    display: none;
+.toolBar > input[type="radio"] {
+  display: none;
 }
 
-.toolBar > input[type="radio"]:checked + label{
-    color: rgba(255, 255, 255, 1);
+.toolBar > input[type="radio"]:checked + label {
+  color: rgba(255, 255, 255, 1);
 }
 
-.toolDiv{
-    /* background: rgba(255, 255, 255, 1); */
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    margin: 15px 10px;
-    cursor: pointer;
-    transition: color .2s;
+.toolDiv {
+  /* background: rgba(255, 255, 255, 1); */
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin: 15px 10px;
+  cursor: pointer;
+  transition: color 0.2s;
 }
 
-.toolDiv:hover{
-    color: rgba(196, 222, 238, 1);
+.toolDiv:hover {
+  color: rgba(196, 222, 238, 1);
 }
 
-.toolDiv > i{
-    font-size: 40px;
+.toolDiv > i {
+  font-size: 40px;
 }
 
-.toolDiv > span{
-    font-size: 12px;
+.toolDiv > span {
+  font-size: 12px;
 }
 
-.subMenuBox{
-    display: flex;
-    flex-direction: column;
-    overflow: auto;
-    flex: 1 1 auto;
-    background: rgba(38, 73, 88,1);
+.subMenuBox {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  flex: 1 1 auto;
+  background: rgba(38, 73, 88, 1);
 }
 
-.subMenuImg{
-    /* background: rgb(150, 51, 51); */
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 auto;
-    align-items: center;
-    overflow-y: auto;
-    color: rgba(196, 222, 238, 1);
-    transition: height .2s, opacity .3s, padding .2s;
+.subMenuImg {
+  /* background: rgb(150, 51, 51); */
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  align-items: center;
+  overflow-y: auto;
+  color: rgba(196, 222, 238, 1);
+  transition: height 0.2s, opacity 0.3s, padding 0.2s;
 }
 
-.upldBtnDiv{
-    position: relative;
-    padding: 50px 10px;
-    width: 100%;
-    text-align: center;
-    overflow: hidden;
-    display: inline-block;
+.upldBtnDiv {
+  position: relative;
+  padding: 50px 10px;
+  width: 100%;
+  text-align: center;
+  overflow: hidden;
+  display: inline-block;
 }
 
-.upldBtnDiv > .imgDetailCover{
-    display: none;
-    position: fixed;
-    background: rgba(0, 0, 0, .7);
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    z-index: 2;
+.upldBtnDiv > .imgDetailCover {
+  display: none;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.7);
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 2;
 }
 
-.upldBtnDiv .cls{
-    cursor: pointer;
-    font-size: 35px;
-    right: 20px;
-    position: absolute;
+.upldBtnDiv .cls {
+  cursor: pointer;
+  font-size: 35px;
+  right: 20px;
+  position: absolute;
 }
 
-.cls > button{
-    background: transparent;
-    border: 0;
-    color: white;
-    font-size: 30px;
-    cursor: pointer;
+.cls > button {
+  background: transparent;
+  border: 0;
+  color: white;
+  font-size: 30px;
+  cursor: pointer;
 }
 
-.upldBtnDiv table{
-    background: rgba(255, 255, 255, 1);
-    padding: 10px;
-    color: rgba(0, 0, 0, 1);
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.upldBtnDiv table {
+  background: rgba(255, 255, 255, 1);
+  padding: 10px;
+  color: rgba(0, 0, 0, 1);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.upldBtnDiv img{
-    height: 300px;
+.upldBtnDiv img {
+  height: 300px;
 }
 
-.searchImgDiv{
-    margin: 15px auto 20px;
-    text-align: center;
-    width: 80%;
+.searchImgDiv {
+  margin: 15px auto 20px;
+  text-align: center;
+  width: 80%;
 }
 
 .imgList {
-    line-height: 0;
- 
-    -webkit-column-count: 2;
-    -webkit-column-gap:   8px;
-    -moz-column-count:    2;
-    -moz-column-gap:      8px;
-    column-count:         2;
-    column-gap:           8px;  
+  line-height: 0;
+
+  -webkit-column-count: 2;
+  -webkit-column-gap: 8px;
+  -moz-column-count: 2;
+  -moz-column-gap: 8px;
+  column-count: 2;
+  column-gap: 8px;
 }
-  
+
 .imgList img {
-    width: 100% !important;
-    height: auto !important;
-    cursor: pointer;
-    margin-bottom: 8px;
-    border: 1px solid rgba(255, 255, 255, .5);
+  width: 100% !important;
+  height: auto !important;
+  cursor: pointer;
+  margin-bottom: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 /* .imgList{
@@ -271,122 +273,122 @@
     margin: 2%;
 } */
 
-.subMenuComp{
-    /* background: rgb(46, 116, 173); */
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 auto;
-    align-items: center;
-    overflow-y: auto;
-    color: rgba(196, 222, 238, 1);
-    transition: height .2s, opacity .3s, padding .2s;
+.subMenuComp {
+  /* background: rgb(46, 116, 173); */
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  align-items: center;
+  overflow-y: auto;
+  color: rgba(196, 222, 238, 1);
+  transition: height 0.2s, opacity 0.3s, padding 0.2s;
 }
 
-.compDetailList{
-    text-align: left;
-    width: 90%;
+.compDetailList {
+  text-align: left;
+  width: 90%;
 }
 
-.compDetailList h3{
-    margin: 5px 0;
-    width: fit-content;
+.compDetailList h3 {
+  margin: 5px 0;
+  width: fit-content;
 }
 
-.compDetailList div{
-    cursor: pointer;
-    border: 1px solid rgba(255, 255, 255, .5);
-    padding: 7px;
+.compDetailList div {
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  padding: 7px;
 }
 
-.compDetailList img{
-    width: 50%;
+.compDetailList img {
+  width: 50%;
 }
 
-.subMenuText{
-    /* background: rgb(54, 150, 51); */
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 auto;
-    align-items: center;
-    overflow-y: auto;
-    color: rgba(196, 222, 238, 1);
-    transition: height .2s, opacity .3s, padding .2s;
+.subMenuText {
+  /* background: rgb(54, 150, 51); */
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  align-items: center;
+  overflow-y: auto;
+  color: rgba(196, 222, 238, 1);
+  transition: height 0.2s, opacity 0.3s, padding 0.2s;
 }
 
-.subMenuColor{
-    /* background: rgb(51, 147, 150); */
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 auto;
-    align-items: center;
-    overflow-y: auto;
-    color: rgba(196, 222, 238, 1);
-    transition: height .2s, opacity .3s, padding .2s;
+.subMenuColor {
+  /* background: rgb(51, 147, 150); */
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  align-items: center;
+  overflow-y: auto;
+  color: rgba(196, 222, 238, 1);
+  transition: height 0.2s, opacity 0.3s, padding 0.2s;
 }
 
-.clrPickerDiv{
-    border: 2px solid rgba(255,255,255,1);
-    border-radius: 100px;
-    background: white;
-    cursor: pointer;
+.clrPickerDiv {
+  border: 2px solid rgba(255, 255, 255, 1);
+  border-radius: 100px;
+  background: white;
+  cursor: pointer;
 }
 
-.clrPicker{
-    padding: 5px 20px;
-    opacity: 0;
-    cursor: pointer;
+.clrPicker {
+  padding: 5px 20px;
+  opacity: 0;
+  cursor: pointer;
 }
 
-.subMenuTemplate{
-    /* background: rgb(46, 116, 173); */
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 auto;
-    align-items: center;
-    overflow-y: auto;
-    color: rgba(196, 222, 238, 1);
-    transition: height .2s, opacity .3s, padding .2s;
+.subMenuTemplate {
+  /* background: rgb(46, 116, 173); */
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  align-items: center;
+  overflow-y: auto;
+  color: rgba(196, 222, 238, 1);
+  transition: height 0.2s, opacity 0.3s, padding 0.2s;
 }
 
 .tempList {
-    line-height: 0;
- 
-    -webkit-column-count: 1;
-    -webkit-column-gap:   8px;
-    -moz-column-count:    1;
-    -moz-column-gap:      8px;
-    column-count:         1;
-    column-gap:           8px;  
+  line-height: 0;
+
+  -webkit-column-count: 1;
+  -webkit-column-gap: 8px;
+  -moz-column-count: 1;
+  -moz-column-gap: 8px;
+  column-count: 1;
+  column-gap: 8px;
 }
-  
+
 .tempList > div {
-    cursor: pointer;
-    margin-bottom: 8px;
-    padding-bottom: 15px;
-    border: 1px solid rgba(255, 255, 255, .5);
-    text-align: center;
-    background: transparent;
-    transition: background-color .3s, color .3s;
+  cursor: pointer;
+  margin-bottom: 8px;
+  padding-bottom: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  text-align: center;
+  background: transparent;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-.tempList > div:hover{
-    background: rgba(255, 255, 255, .7);
-    color: rgba(38, 73, 88,1);
+.tempList > div:hover {
+  background: rgba(255, 255, 255, 0.7);
+  color: rgba(38, 73, 88, 1);
 }
 
-.tempList img{
-    width: 100% !important;
-    height: auto !important;
-    margin-bottom: 15px;
+.tempList img {
+  width: 100% !important;
+  height: auto !important;
+  margin-bottom: 15px;
 }
 
-.subMenuSave{
-    /* background: rgb(51, 147, 150); */
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 auto;
-    align-items: center;
-    overflow-y: auto;
-    color: rgba(196, 222, 238, 1);
-    transition: height .2s, opacity .3s, padding .2s;
+.subMenuSave {
+  /* background: rgb(51, 147, 150); */
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  align-items: center;
+  overflow-y: auto;
+  color: rgba(196, 222, 238, 1);
+  transition: height 0.2s, opacity 0.3s, padding 0.2s;
 }
