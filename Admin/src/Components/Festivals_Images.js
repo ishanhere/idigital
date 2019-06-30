@@ -29,6 +29,24 @@ class Festivals_Images extends Component {
     this.setState({ show: false });
   }
 
+  handleSearch = e => {
+    // console.log(e.target.value);
+    var data = {
+      keyword1: e.target.value
+    };
+
+    fetch("http://localhost:5000/search/festivals", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+    // .then(response => response.json())
+    // .then(e => this.setState({ allCompanies: e.express, data: true }));
+  };
+
   logChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
@@ -82,6 +100,15 @@ class Festivals_Images extends Component {
   render() {
     return (
       <div>
+        {/* <input
+          type="text"
+          name="festival_search"
+          placeholder="Enter Keywords Here to Search the festivals"
+          className="form-control w-50"
+          onChange={this.handleSearch}
+        /> */}
+
+        <br />
         <div>
           <Button variant="danger" onClick={this.handleShow}>
             Add festival
@@ -117,7 +144,7 @@ class Festivals_Images extends Component {
                 onChange={this.logChange}
               />
               <br />
-              <input type="file" onChange={this.selectImages} name="myfile" />
+              <input type="file" onChange={this.selectImages} name="myfile1" />
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={this.handleClose}>

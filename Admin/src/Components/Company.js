@@ -2,43 +2,18 @@
 
 import React, { Component } from "react";
 import axios from "axios";
-import SimpleReactValidator from "simple-react-validator";
+
 import Modal from "react-bootstrap/Modal";
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 import Button from "react-bootstrap/Button";
-// import { FormErrors } from "./FormErrors";
+import { FormErrors } from "./FormErrors";
+import formvalidator from "simple-react-validator";
 const path = require("path");
 
-// const formValid = ({ formErrors, ...rest }) => {
-//   let valid = true;
-//   Object.values(formErrors).forEach(val => {
-//     val.length > 0 && (valid = false);
-
-//     Object.values(rest).forEach(val => {
-//       val === null && (valid = false);
-//     });
-//     return valid;
-//   });
-// };
-
-// const emailRegex = RegExp(
-//   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-// );
-
-// const formValid = ({ formErrors, ...rest }) => {
-//   let valid = true;
-//   Object.values(formErrors).forEach(val => {
-//     val.length > 0 && (valid = false);
-
-//     Object.values(rest).forEach(val => {
-//       val === null && (valid = false);
-//     });
-//     return valid;
-//   });
 class Company extends Component {
   constructor(props) {
     super(props);
-    this.validator = new SimpleReactValidator();
+
     this.state = {
       allCompanies: [],
       data: false,
@@ -55,31 +30,11 @@ class Company extends Component {
       count: 1,
       active: "",
       show: false
-      // formErrors: {
-      //   company: "",
-      //   pname: "",
-      //   email: "",
-      //   pwd: "",
-      //   cpwd: "",
-      //   address: "",
-      //   tagline: "",
-      //   phone: "",
-      //   logoFile: null,
-      //   logoFileName: null
-      // },
-      // formValid: false,
-      // emailValid: false,
-      // companyValid: false,
-      // personValid: false,
-      // passwordValid: false,
-      // confirmpasswordValid: false,
-      // phoneValid: false,
-      // addressValid: false,
-      // tagLine: false
     };
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.printData = this.printData.bind(this);
+    this.validator = new formvalidator();
   }
 
   handleShow() {
@@ -101,105 +56,21 @@ class Company extends Component {
     // console.log(e.target.files[0]);
     this.setState({ [e.target.name]: e.target.value });
   };
-  // this.validateField(e.target.name, e.target.value);
 
-  // validateField(fieldname, value) {
-  //   let fieldValidationErrors = this.state.formErrors;
-  //   let emailValid = this.state.emailValid;
-  //   let passwordValid = this.state.passwordValid;
-  //   let companyValid = this.state.companyValid;
-  //   let phoneValid = this.state.phoneValid;
-  //   let taglineValid = this.state.taglineValid;
-  //   let addressValid = this.state.addressValid;
-  //   let confirmpasswordValid = this.state.confirmpasswordValid;
-  //   let personValid = this.state.personValid;
-
-  //   switch (fieldname) {
-  //     case "email":
-  //       emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-  //       fieldValidationErrors.email = emailValid ? "" : " is invalid";
-  //       break;
-
-  //     case "company":
-  //       companyValid = value.length >= 6;
-  //       fieldValidationErrors.company = companyValid ? "" : " is too short";
-  //       break;
-
-  //     case "pname":
-  //       personValid = value.length >= 6;
-  //       fieldValidationErrors.pname = personValid ? "" : " is too short";
-  //       break;
-
-  //     case "pwd":
-  //       passwordValid = value.length >= 8;
-  //       fieldValidationErrors.pwd = passwordValid ? "" : " is too short";
-  //       break;
-
-  //     case "cpwd":
-  //       confirmpasswordValid = value.length >= 8;
-  //       fieldValidationErrors.cpwd = confirmpasswordValid
-  //         ? ""
-  //         : " is too short";
-  //       break;
-
-  //     case "address":
-  //       addressValid = value.length >= 10;
-  //       fieldValidationErrors.address = addressValid ? "" : " is too short";
-  //       break;
-
-  //     case "tagline":
-  //       taglineValid = value.length >= 5;
-  //       fieldValidationErrors.tagline = taglineValid ? "" : " is too short";
-  //       break;
-
-  //     case "phone":
-  //       phoneValid = value.length === 10;
-  //       fieldValidationErrors.phone = phoneValid ? "" : " is too short";
-  //       break;
-
-  //     default:
-  //       break;
-  //   }
-  //   this.setState(
-  //     {
-  //       formErrors: fieldValidationErrors,
-  //       emailValid: emailValid,
-  //       passwordValid: passwordValid,
-  //       taglineValid: taglineValid,
-  //       phoneValid: phoneValid,
-  //       companyValid: companyValid,
-  //       confirmpasswordValid: confirmpasswordValid,
-  //       addressValid: addressValid,
-  //       personValid: personValid
-  //     },
-  //     this.validateForm
-  //   );
-  // }
-  // validateForm() {
-  //   this.setState({
-  //     formValid:
-  //       this.state.emailValid &&
-  //       this.state.passwordValid &&
-  //       this.state.taglineValid &&
-  //       this.state.phoneValid &&
-  //       this.state.companyValid &&
-  //       this.confirmpasswordValid &&
-  //       this.state.addressValid &&
-  //       this.state.personValid
-  //   });
-  // }
   imgChange = e => {
     this.setState({ logoFile: e.target.files[0] });
     var logoName = path.extname(e.target.files[0].name);
     var logonamedone = JSON.stringify(Date.now()) + logoName;
     this.setState({ logoFileName: logonamedone });
-    // console.log(e.target.files[0]);
-    console.log(logonamedone);
   };
 
   uploadImage = () => {
     const fd = new FormData();
+    console.log(this.state.logoFile);
+    console.log(this.state.logoFileName);
     fd.append("myfile", this.state.logoFile, this.state.logoFileName);
+    console.log(fd);
+
     axios
       .post("http://localhost:5000/upload", fd)
       .then(res => console.log(res))
@@ -207,7 +78,7 @@ class Company extends Component {
   };
 
   handleSearch = e => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     var data = {
       keyword: e.target.value
     };
@@ -222,135 +93,63 @@ class Company extends Component {
     })
       .then(response => response.json())
       .then(e => this.setState({ allCompanies: e.express, data: true }));
-    // .then(response => {
-    //   if (response.status >= 400) {
-    //     throw new Error("Bad Response from server");
-    //   }
-    //   e => this.setState({ allCompanies: e.express, data: true });
-    //   return response.json();
-    //* })
-    // .then(function(data) {
-    //   console.log(data);
-
-    //   this.printData();
-    // })
-    // .catch(function(err) {
-    //   console.log(err);
-    // });
   };
 
   handleSubmit = e => {
     e.preventDefault();
-    this.handleClose();
-    this.uploadImage();
-    // if (formValid(this.state))
-    var data = {
-      company: this.state.company,
-      pname: this.state.pname,
-      email: this.state.email,
-      pwd: this.state.pwd,
-      cpwd: this.state.cpwd,
-      address: this.state.address,
-      tagline: this.state.tagline,
-      phone: this.state.phone,
-      logoFile: this.state.logoFileName
-    };
 
-    fetch("http://localhost:5000/add/company", {
-      method: "POST",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    })
-      .then(response => {
-        console.log("Hello");
-        fetch("http://localhost:5000/list/company")
-          .then(response => response.json())
-          .then(e => this.setState({ allCompanies: e.express, data: true }));
-        if (response.status >= 400) {
-          throw new Error("Bad Response from server");
-        }
+    if (!this.validator.allValid()) {
+      this.validator.showMessages();
+      this.forceUpdate();
+    } else {
+      this.handleClose();
+      this.uploadImage();
+      // if (formValid(this.state))
+      var data = {
+        company: this.state.company,
+        pname: this.state.pname,
+        email: this.state.email,
+        pwd: this.state.pwd,
+        cpwd: this.state.cpwd,
+        address: this.state.address,
+        tagline: this.state.tagline,
+        phone: this.state.phone,
+        logoFile: this.state.logoFileName
+      };
 
-        return response.json();
+      fetch("http://localhost:5000/add/company", {
+        method: "POST",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
       })
-      .then(function(data) {
-        console.log(data);
+        .then(response => {
+          // console.log("Hello");
+          fetch("http://localhost:5000/list/company")
+            .then(response => response.json())
+            .then(e => this.setState({ allCompanies: e.express, data: true }));
+          if (response.status >= 400) {
+            throw new Error("Bad Response from server");
+          }
 
-        this.printData();
-      })
-      .catch(function(err) {
-        console.log(err);
-      });
+          return response.json();
+        })
+        .then(function(data) {
+          // console.log(data);
+          // this.printData();
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    }
   };
 
   logChange(e) {
-    // const [name, value] = e.target;
-    // let formErrors = this.state.formErrors;
-    // switch (name) {
-    //   case "company":
-    //     formErrors.company =
-    //       value.length < 20 && value.length > 0
-    //         ? "Minimum 20 character Required"
-    //         : "";
-    //     break;
-
-    //   case "pname":
-    //     formErrors.pname =
-    //       value.length < 20 && value.length > 0
-    //         ? "Minimum 20 character Required"
-    //         : "";
-    //     break;
-
-    //   case "email":
-    //     formErrors.email =
-    //       value.length < 20 && value.length > 0
-    //         ? "Minimum 20 character Required"
-    //         : "";
-    //     break;
-
-    //   case "pwd":
-    //     formErrors.pwd =
-    //       value.length < 6 && value.length > 0
-    //         ? "Minimum 6 character Required"
-    //         : "";
-    //     break;
-
-    //   case "cpwd":
-    //     formErrors.cpwd =
-    //       value.length < 6 && value.length > 0
-    //         ? "Minimum 6 character Required"
-    //         : "";
-    //     break;
-
-    //   case "address":
-    //     formErrors.address =
-    //       value.length < 20 && value.length > 0 ? " 20 character Required" : "";
-    //     break;
-
-    //   case "tagline":
-    //     formErrors.tagline =
-    //       value.length < 20 && value.length > 0 ? "20 character Required" : "";
-    //     break;
-
-    //   case "phone":
-    //     formErrors.phone = value.length == 20 ? "10 Digits Required" : "";
-    //     break;
-
-    //   default:
-    //     break;
-    // }
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  submitform() {
-    if (this.validator.allValid()) {
-      alert("You submitted stuff");
-    } else {
-      alert("Wrong data");
-    }
-  }
   handleActivated(e, id) {
     const comid = id;
     var data = {
@@ -363,7 +162,6 @@ class Company extends Component {
     });
     this.setState({ allCompanies: p });
 
-    console.log(data);
     fetch("http://localhost:5000/edit/company", {
       method: "POST",
       headers: {
@@ -382,12 +180,6 @@ class Company extends Component {
         fetch("http://localhost:5000/list/company")
           .then(response => response.json())
           .then(e => this.setState({ allCompanies: e.express, data: true }));
-        // console.log(data);
-
-        // if (data === "success") {
-        //   // e.target.checked : !e.target.checked;
-        //   // this.setState({ msg: "Company Edited", active: !e.target.checked });
-        // }
       })
       .catch(function(err) {
         console.log(err);
@@ -396,9 +188,7 @@ class Company extends Component {
     // this.setState({  });
   }
 
-  // handleCheckboxChange = (event, cid) => {
-  //   // console.log("Hello" + cid);
-  // };
+  //
 
   render() {
     let i = 1;
@@ -409,6 +199,9 @@ class Company extends Component {
       marginBottom: 0,
       width: 250
     };
+    var istyle = {
+      color: "black"
+    };
 
     return (
       <div>
@@ -417,15 +210,12 @@ class Company extends Component {
           method="post"
           encType="multipart/form-data"
           action=""
-          onSubmit={this.submitform}
         >
           <Modal show={this.state.show} onHide={this.handleClose}>
             <Modal.Header closeButton>
               <Modal.Title>Company</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              {/* <FormErrors formErrors={this.state.formErrors} /> */}
-              {/* <!-- Modal Body --> */}
               <div class="modal-body">
                 <p class="statusMsg" />
                 <div class="row">
@@ -440,31 +230,42 @@ class Company extends Component {
                         name="company"
                         placeholder="Enter Company"
                         onChange={this.logChange}
+                        value={this.state.company}
+                        onBlur={() => {
+                          this.validator.showMessageFor("company");
+                        }}
+                        style={istyle}
                       />
-                      {this.validator.message(
-                        "company",
-                        this.state.company,
-                        "required|alpa"
-                      )}
+                      <span style={{ color: "red" }}>
+                        {this.validator.message(
+                          "company",
+                          this.state.company,
+                          "required|alpha_space"
+                        )}
+                      </span>
                     </div>
                   </div>
                   <div class="col-sm-6">
                     <div class="form-group">
                       <label>Contact Person</label>
-
                       <input
                         type="text"
                         class="form-control"
+                        style={istyle}
                         id="pname"
                         name="pname"
                         placeholder="Enter Person Name"
                         onChange={this.logChange}
+                        value={this.state.pname}
+                        onBlur={() => this.validator.showMessageFor("pname")}
                       />
-                      {this.validator.message(
-                        "company",
-                        this.state.pname,
-                        "required|alpa"
-                      )}
+                      <span style={{ color: "red" }}>
+                        {this.validator.message(
+                          "pname",
+                          this.state.pname,
+                          "required|alpha_space"
+                        )}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -478,8 +279,18 @@ class Company extends Component {
                     id="email"
                     name="email"
                     placeholder="Enter email"
+                    style={istyle}
                     onChange={this.logChange}
+                    value={this.state.email}
+                    onBlur={() => this.validator.showMessageFor("email")}
                   />
+                  <span style={{ color: "red" }}>
+                    {this.validator.message(
+                      "email",
+                      this.state.email,
+                      "required|email"
+                    )}
+                  </span>
                 </div>
 
                 <div class="row">
@@ -490,11 +301,21 @@ class Company extends Component {
                       <input
                         type="password"
                         class="form-control"
+                        style={istyle}
                         id="pwd"
                         name="pwd"
                         placeholder="Enter Password"
                         onChange={this.logChange}
+                        value={this.state.pwd}
+                        onBlur={() => this.validator.showMessageFor("pwd")}
                       />
+                      <span style={{ color: "red" }}>
+                        {this.validator.message(
+                          "pwd",
+                          this.state.pwd,
+                          "required|min:8|max:120"
+                        )}
+                      </span>
                     </div>
                   </div>
                   <div class="col-sm-6">
@@ -506,9 +327,19 @@ class Company extends Component {
                         class="form-control"
                         id="cpwd"
                         name="cpwd"
+                        style={istyle}
                         placeholder="Enter Confirm Password"
                         onChange={this.logChange}
+                        value={this.state.cpwd}
+                        onBlur={() => this.validator.showMessageFor("cpwd")}
                       />
+                      <span style={{ color: "red" }}>
+                        {this.validator.message(
+                          "cpwd",
+                          this.state.cpwd,
+                          "required|min:8|max:120"
+                        )}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -523,7 +354,17 @@ class Company extends Component {
                     name="address"
                     placeholder="Enter Company Address"
                     onChange={this.logChange}
+                    value={this.state.address}
+                    style={istyle}
+                    onBlur={() => this.validator.showMessageFor("address")}
                   />
+                  <span style={{ color: "red" }}>
+                    {this.validator.message(
+                      "address",
+                      this.state.address,
+                      "required|alpha_num_dash_space"
+                    )}
+                  </span>
                 </div>
 
                 <div class="row">
@@ -538,7 +379,17 @@ class Company extends Component {
                         name="tagline"
                         placeholder="Enter Company Tagline"
                         onChange={this.logChange}
+                        value={this.state.tagline}
+                        style={istyle}
+                        onBlur={() => this.validator.showMessageFor("tagline")}
                       />
+                      <span style={{ color: "red" }}>
+                        {this.validator.message(
+                          "tagline",
+                          this.state.tagline,
+                          "required|alpha_num_dash_space"
+                        )}
+                      </span>
                     </div>
                   </div>
                   <div class="col-sm-6">
@@ -552,7 +403,17 @@ class Company extends Component {
                         name="phone"
                         placeholder="Enter Phone"
                         onChange={this.logChange}
+                        value={this.state.phone}
+                        style={istyle}
+                        onBlur={() => this.validator.showMessageFor("phone")}
                       />
+                      <span style={{ color: "red" }}>
+                        {this.validator.message(
+                          "phone",
+                          this.state.phone,
+                          "required|phone"
+                        )}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -570,24 +431,18 @@ class Company extends Component {
                           onChange={this.imgChange}
                           name="myfile"
                         />
+                        <span style={{ color: "red" }}>
+                          {this.validator.message(
+                            "logoFileName",
+                            this.state.logoFileName,
+                            "required"
+                          )}
+                        </span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              {/* <!-- Modal Footer --> */}
-              {/* <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-default"
-                  data-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button type="submit" class="btn btn-default submitBtn">
-                  SUBMIT
-                </button>
-              </div> */}
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={this.handleClose}>
@@ -603,7 +458,7 @@ class Company extends Component {
             </Modal.Footer>
           </Modal>
         </form>
-        <h1 align="center"> COMPANY </h1>
+
         <center>
           <input
             type="text"

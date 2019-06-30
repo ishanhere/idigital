@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Company from "./Company";
 import Festivals_Images from "./Festivals_Images";
+import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 // import Editor from "./Editor";
 export default class Content extends Component {
   // componentWillUpdate(props, newprops) {
@@ -17,7 +18,7 @@ export default class Content extends Component {
     return (
       <div>
         <center>
-          <h1>Shree Ganesh !</h1>
+          <h1>Shree Ganesh</h1>
           {this.props.linktoRender == "Companies" ? (
             <Company {...this.props} />
           ) : this.props.linktoRender == "Festivals_Images" ? (

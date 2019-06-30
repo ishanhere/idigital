@@ -47,7 +47,7 @@ app.get("/api/hello", (req, res) => {
 //   }
 // });
 
-var storage = multer.diskStorage({
+var storage1 = multer.diskStorage({
   destination: function(req, file, callback) {
     callback(null, "./Admin/public/files/");
   },
@@ -55,11 +55,11 @@ var storage = multer.diskStorage({
     callback(null, file.originalname);
   }
 });
-var upload = multer({ storage: storage }).single("myfile");
+var upload1 = multer({ storage: storage1 }).single("myfile");
 
 app.post("/upload", function(req, res) {
-  console.log(req.logoFile);
-  upload(req, res, function(err) {
+  console.log(req.logoFile + " from server.js");
+  upload1(req, res, function(err) {
     if (err) {
       console.log(err);
       return res.end("Error uploading file.");
@@ -170,7 +170,7 @@ app.get("/api/showimagesbyfestival", (req, res) => {
   });
 }); // INM 11-06-2019
 
-var storage = multer.diskStorage({
+var storage2 = multer.diskStorage({
   destination: function(req, file, callback) {
     callback(null, "./Admin/public/upload/");
   },
@@ -178,11 +178,12 @@ var storage = multer.diskStorage({
     callback(null, file.originalname);
   }
 });
-var upload = multer({ storage: storage }).array("myfile");
+
+var upload2 = multer({ storage: storage2 }).array("myfile");
 
 app.post("/api/uploadfestivalimages", function(req, res) {
   console.log(req.query.fid);
-  upload(req, res, function(err) {
+  upload2(req, res, function(err) {
     if (err) {
       return res.end("Error uploading file.");
     }
@@ -202,9 +203,10 @@ app.post("/api/uploadfestivalimages", function(req, res) {
     res.end("File is uploaded successfully!");
   });
 }); // INM 15-06-2019
+
 app.post("/uploadfestivaldisplayimage", function(req, res) {
   console.log(req.logoFile);
-  upload(req, res, function(err) {
+  upload2(req, res, function(err) {
     if (err) {
       console.log(err);
       return res.end("Error uploading file.");
@@ -233,6 +235,22 @@ app.post("/search/company", (req, res) => {
     if (err) throw err;
     // console.log(query);
     res.send({ express: result });
+  });
+});
+
+app.post("/search/festivals", (req, res) => {
+  let fest = req.body.keyword1;
+  console.log(fest);
+  let sql =
+    "SELECT * from tblfestival where fname like '%" +
+    fest +
+    "%' or keywords like '%" +
+    fest +
+    "%'";
+  console.log(sql);
+  let query = con.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send();
   });
 });
 

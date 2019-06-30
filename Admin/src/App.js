@@ -27,16 +27,16 @@ class App extends React.Component {
     return (
       <Router>
         <div className="App">
-          {/* <Header linkfun={this.setlink} /> */}
-          <Header />
+          <Header linkfun={this.setlink} />
+          {/* <Header />
           <Switch>
             <Route exact path="/" Component={About} />
             <Route exact path="/company" Component={Company} />
             <Route exact path="/festival_images" Component={Festivals_Images} />
-          </Switch>
-          {/* <Footer /> */}
+          </Switch> */}
 
-          {/* <Content linktoRender={this.state.link} linkfun={this.setlink} /> */}
+          <Content linktoRender={this.state.link} linkfun={this.setlink} />
+          <Footer />
         </div>
       </Router>
     );

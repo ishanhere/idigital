@@ -47,14 +47,15 @@ export default class Header extends Component {
                           </li>
 
                           <li className="">
-                            <Link to="/company" className="nav-link">
-                              {/* <a
+                            {/* <Link to="/company" className="nav-link"> */}
+                            <a
                               href="#"
                               name="Companies"
                               onClick={() => this.props.linkfun("Companies")}
-                            > */}
+                            >
                               Company
-                            </Link>
+                            </a>
+                            {/* </Link> */}
                             {/* </a> */}
                           </li>
                           <li>
