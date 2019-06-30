@@ -47,7 +47,7 @@ app.get("/api/hello", (req, res) => {
 //   }
 // });
 
-var storage = multer.diskStorage({
+var storage1 = multer.diskStorage({
   destination: function(req, file, callback) {
     callback(null, "./Admin/public/files/");
   },
@@ -55,11 +55,11 @@ var storage = multer.diskStorage({
     callback(null, file.originalname);
   }
 });
-var upload = multer({ storage: storage }).single("myfile");
+var upload1 = multer({ storage: storage1 }).single("myfile");
 
 app.post("/upload", function(req, res) {
-  console.log(req.logoFile);
-  upload(req, res, function(err) {
+  console.log(req.logoFile + " from server.js");
+  upload1(req, res, function(err) {
     if (err) {
       console.log(err);
       return res.end("Error uploading file.");
@@ -201,7 +201,7 @@ app.get("/api/showimages", (req, res) => {
   });
 }); //22-06-2019 KILLERGOD
 
-var storage = multer.diskStorage({
+var storage2 = multer.diskStorage({
   destination: function(req, file, callback) {
     callback(null, "./Admin/public/upload/");
   },
@@ -209,11 +209,12 @@ var storage = multer.diskStorage({
     callback(null, file.originalname);
   }
 });
-var upload = multer({ storage: storage }).array("myfile");
+
+var upload2 = multer({ storage: storage2 }).array("myfile");
 
 app.post("/api/uploadfestivalimages", function(req, res) {
   console.log(req.query.fid);
-  upload(req, res, function(err) {
+  upload2(req, res, function(err) {
     if (err) {
       return res.end("Error uploading file.");
     }
@@ -233,9 +234,10 @@ app.post("/api/uploadfestivalimages", function(req, res) {
     res.end("File is uploaded successfully!");
   });
 }); // INM 15-06-2019
+
 app.post("/uploadfestivaldisplayimage", function(req, res) {
   console.log(req.logoFile);
-  upload(req, res, function(err) {
+  upload2(req, res, function(err) {
     if (err) {
       console.log(err);
       return res.end("Error uploading file.");
@@ -244,7 +246,7 @@ app.post("/uploadfestivaldisplayimage", function(req, res) {
   });
 }); // INM 17-06-2019
 
-var storage1 = multer.diskStorage({
+var storage4 = multer.diskStorage({
   destination: function(req, file, callback) {
     callback(null, "./Admin/public/template_pic/");
   },
@@ -252,11 +254,11 @@ var storage1 = multer.diskStorage({
     callback(null, file.originalname);
   }
 }); // 25-06-2019 KILLERGOD
-var upload1 = multer({ storage: storage1 }).single("myfile"); // 25-06-2019 KILLERGOD
+var upload4 = multer({ storage: storage4 }).single("myfile"); // 25-06-2019 KILLERGOD
 
 app.post("/uploadTemplate", function(req, res) {
   // console.log(req);
-  upload1(req, res, function(err) {
+  upload4(req, res, function(err) {
     if (err) {
       console.log(err);
       return res.end("Error uploading file.");
@@ -293,7 +295,7 @@ app.get("/api/showtemplate", (req, res) => {
   });
 }); //22-06-2019 KILLERGOD
 
-var storage2 = multer.diskStorage({
+var storage3 = multer.diskStorage({
   destination: function(req, file, callback) {
     callback(null, "./Admin/public/final_pic/");
   },
@@ -301,11 +303,11 @@ var storage2 = multer.diskStorage({
     callback(null, file.originalname);
   }
 }); // 29-06-2019 KILLERGOD
-var upload2 = multer({ storage: storage2 }).single("myfile"); // 29-06-2019 KILLERGOD
+var upload3 = multer({ storage: storage3 }).single("myfile"); // 29-06-2019 KILLERGOD
 
 app.post("/uploadFinalImage", function(req, res) {
   // console.log(req);
-  upload2(req, res, function(err) {
+  upload3(req, res, function(err) {
     if (err) {
       console.log(err);
       return res.end("Error uploading file.");
@@ -329,5 +331,43 @@ app.post("/api/addFinalImage/", (req, res) => {
     res.send(JSON.stringify(result));
   });
 }); //29-06-2019 KillerGod
+app.post("/search/company", (req, res) => {
+  let word = req.body.keyword;
+
+  let sql =
+    "SELECT * from tblcompany where cname like '%" +
+    word +
+    "%' or email like '%" +
+    word +
+    "%' or personname like '%" +
+    word +
+    "%'or phone like '%" +
+    word +
+    "%' or address like '%" +
+    word +
+    "%'";
+  console.log(sql);
+  let query = con.query(sql, (err, result) => {
+    if (err) throw err;
+    // console.log(query);
+    res.send({ express: result });
+  });
+});
+
+app.post("/search/festivals", (req, res) => {
+  let fest = req.body.keyword1;
+  console.log(fest);
+  let sql =
+    "SELECT * from tblfestival where fname like '%" +
+    fest +
+    "%' or keywords like '%" +
+    fest +
+    "%'";
+  console.log(sql);
+  let query = con.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send();
+  });
+});
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

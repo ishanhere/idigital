@@ -7,7 +7,7 @@ export default class Displayfestivalbyimages extends Component {
   render() {
     return (
       <img
-        style={{ height: 200, width: 200, margin: 5 }}
+        style={{ height: 200, width: 200, margin: 15, padding: 5 }}
         alt="unable to load."
         src={"http://localhost:3000/upload/" + this.props.item.path}
       />
