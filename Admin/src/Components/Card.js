@@ -18,7 +18,13 @@ export default class Card extends Component {
                   "http://localhost:3000/upload/" +
                   this.props.item.displaypicturepath
                 }
-                style={{ height: 300, width: 300, margin: 15, padding: 5 }}
+                style={{
+                  height: 300,
+                  width: 300,
+                  margin: 15,
+                  padding: 5,
+                  borderRadius: 15
+                }}
               />
             </div>
             <div className="ministry_title">{this.props.item.fname}</div>

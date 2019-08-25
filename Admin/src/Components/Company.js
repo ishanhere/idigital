@@ -529,7 +529,7 @@ class Company extends Component {
                   <td>
                     <img
                       src={"http://localhost:3000/files/" + com.logo}
-                      style={{ height: 50, width: 50 }}
+                      style={{ height: 50, width: 50, borderRadius: 15 }}
                     />
                   </td>
                   <td>

@@ -70,10 +70,13 @@ export default class Header extends Component {
                             </a>
                           </li>
                           <li>
-                            <a href="contact.html">Contact</a>
-                          </li>
-                          <li>
-                            <a href="/login">Login / Signup</a>
+                            <a
+                              href="#"
+                              name="Contact"
+                              onClick={() => this.props.linkfun("Contact")}
+                            >
+                              Contact
+                            </a>
                           </li>
                         </ul>
                         {/* <Route

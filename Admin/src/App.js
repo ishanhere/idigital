@@ -4,7 +4,7 @@ import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 
 import "./App.css";
-import { BrowserRouter as Router, Link, Route } from "react-router-dom";
+
 // import { threadId } from "worker_threads";
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 import Festivals_Images from "./Components/Festivals_Images";

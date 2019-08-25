@@ -74,6 +74,7 @@ export default class ImegesofFestivals extends Component {
     ));
     return (
       <div>
+        <br />
         <button
           onClick={() => {
             this.props.changecomponent(1);
