@@ -25,7 +25,7 @@
     "react-router-dom": "^5.0.1",
     "react-validation": "^3.0.7",
     "simple-react-validator": "^1.2.0",
-    "validator": "^11.0.0"
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "concurrently": "^4.0.1",
